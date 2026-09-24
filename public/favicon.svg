@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#0A1630"/>
+  <!-- Stylized Hackthony H symbol -->
+  <path d="M14 12V34C14 42 20 48 28 48H44" stroke="#1E88E5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M50 52V30C50 22 44 16 36 16H20" stroke="#64B5F6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="14" y1="32" x2="50" y2="32" stroke="#38BDF8" stroke-width="7" stroke-linecap="round"/>
+</svg>
