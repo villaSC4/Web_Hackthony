@@ -1,169 +1,245 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
-  FiCpu, FiCalendar, FiCode, FiShoppingBag,
-  FiCheckCircle, FiAward, FiGlobe, FiShield, FiArrowRight
+  FiArrowRight, FiArrowLeft,
+  FiShield, FiCalendar, FiCode, FiShoppingBag, FiCheck,
+  FiChevronLeft
 } from 'react-icons/fi';
-import teamImg from '../../img/nosotros.webp';
+import div1Img from '../../img/div1_consultoria.jpg';
+import div2Img from '../../img/div2_eventos.jpg';
+import div3Img from '../../img/div3_digital.jpg';
+import div4Img from '../../img/div4_hardware.jpg';
 import './About.css';
 
-const divisionsData = [
+const divisions = [
   {
+    id: 'd1',
     code: 'D1',
-    title: 'División de Consultoría y Capacitación',
-    description: 'Expertos en análisis TI, auditoría de vulnerabilidades, diseño de arquitecturas de red y formación tecnológica empresarial.',
-    icon: FiCpu,
     tag: 'Estratégico',
+    title: 'División de Consultoría y Capacitación',
+    shortDesc: 'Expertos en análisis TI, auditorías de vulnerabilidad y diseño de redes corporativas.',
     highlights: ['Auditorías de Ciberseguridad', 'Diseño de Redes Enterprise', 'Workshops y Capacitación Oficial'],
+    image: div1Img,
+    icon: FiShield,
   },
   {
+    id: 'd2',
     code: 'D2',
-    title: 'División de Eventos y Conferencias',
-    description: 'Organización y participación en foros tecnológicos, simposios corporativos y congresos de ciberseguridad a nivel regional.',
-    icon: FiCalendar,
     tag: 'Comunidad TI',
+    title: 'División de Eventos y Conferencias',
+    shortDesc: 'Organización de foros tecnológicos, simposios y congresos de ciberseguridad.',
     highlights: ['Simposios Internacionales', 'Hackathons Corporativas', 'Webinars con Fabricantes'],
+    image: div2Img,
+    icon: FiCalendar,
   },
   {
+    id: 'd3',
     code: 'D3',
-    title: 'División de Servicios Digitales y Desarrollo',
-    description: 'Desarrollo web corporativo, modernización en la nube Azure, automatización de procesos y soluciones digitales a medida.',
-    icon: FiCode,
     tag: 'Ingeniería Cloud',
+    title: 'División de Servicios Digitales y Desarrollo',
+    shortDesc: 'Desarrollo web corporativo, modernización en Azure y automatización a medida.',
     highlights: ['Migración Microsoft Azure', 'Desarrollo de Software Custom', 'Automatización de Workflows'],
+    image: div3Img,
+    icon: FiCode,
   },
   {
+    id: 'd4',
     code: 'D4',
-    title: 'División de Comercialización Informática',
-    description: 'Distribución y licenciamiento oficial de servidores, switches MikroTik, software Microsoft/Adobe y hardware certificado.',
-    icon: FiShoppingBag,
     tag: 'Canal Oficial',
+    title: 'División de Comercialización Informática',
+    shortDesc: 'Distribución y licenciamiento oficial de MikroTik, Microsoft, software y servidores.',
     highlights: ['Distribuidor Oficial MikroTik', 'Licencias Microsoft y Adobe', 'Garantía Directa de Fabricante'],
+    image: div4Img,
+    icon: FiShoppingBag,
   },
 ];
 
 export default function About() {
-  const [activeDiv, setActiveDiv] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isSpinning, setIsSpinning] = useState(false);
+
+  // Giro suave de especialidades con la flechita
+  const handleRotateNext = (e) => {
+    e?.stopPropagation();
+    setIsSpinning(true);
+    setActiveIndex((prev) => (prev + 1) % divisions.length);
+    setTimeout(() => setIsSpinning(false), 550);
+  };
+
+  const handleRotatePrev = (e) => {
+    e?.stopPropagation();
+    setIsSpinning(true);
+    setActiveIndex((prev) => (prev - 1 + divisions.length) % divisions.length);
+    setTimeout(() => setIsSpinning(false), 550);
+  };
+
+  const handleCardClick = (i) => {
+    if (!isExpanded) {
+      setIsExpanded(true);
+      setActiveIndex(0);
+    } else {
+      setActiveIndex(i);
+    }
+  };
 
   return (
     <section className="about section" id="nosotros">
       <div className="container">
-        <div className="about__layout">
+        
+        {/* Layout en fila única: el texto y las tarjetas nunca cambian de fila vertical */}
+        <div className={`about__layout ${isExpanded ? 'about__layout--expanded' : ''}`}>
           
-          {/* COLUMNA IZQUIERDA: EQUIPO DESTACADO Y OPTIMIZADO */}
-          <div className="about__visual-col">
-            <div className="about__photo-stage">
-              
-              {/* Halo sutil optimizado */}
-              <div className="about__photo-halo" />
+          {/* COLUMNA IZQUIERDA: TEXTO CONCISO (Se repliega horizontalmente a la izquierda) */}
+          <div className="about__text-col">
+            <div className="about__text-inner">
+              <h2 className="about__title">
+                Acerca de <span className="about__title-accent">Hackthony</span>
+              </h2>
 
-              {/* Imagen oficial con recorte orgánico */}
-              <div className="about__img-wrapper">
-                <img
-                  src={teamImg}
-                  alt="Equipo de especialistas HackthonySupport"
-                  className="about__team-img"
-                  loading="lazy"
-                />
-              </div>
+              <p className="about__lead">
+                Más de <strong>12 años liderando el mercado de soluciones tecnológicas</strong> y ciberseguridad en Perú, España, Colombia, Argentina y México.
+              </p>
 
-              {/* Píldora 1: Experiencia (Top Right) */}
-              <div className="about__float-pill about__float-pill--experience">
-                <div className="about__pill-icon">
-                  <FiAward size={18} />
-                </div>
-                <div className="about__pill-content">
-                  <strong className="about__pill-title">12+ Años</strong>
-                  <span className="about__pill-sub">Liderazgo TI</span>
-                </div>
-              </div>
+              <p className="about__desc">
+                Nos consolidamos como socio estratégico de organizaciones corporativas brindando soporte técnico 24/7, blindaje perimetral y soluciones que optimizan y protegen la infraestructura de misión crítica.
+              </p>
 
-              {/* Píldora 2: Cobertura Internacional (Bottom Left) */}
-              <div className="about__float-pill about__float-pill--countries">
-                <div className="about__pill-icon">
-                  <FiGlobe size={18} />
+              {/* Métricas clave */}
+              <div className="about__stats-row">
+                <div className="about__stat-item">
+                  <span className="about__stat-number">12+</span>
+                  <span className="about__stat-label">Años de Trayectoria</span>
                 </div>
-                <div className="about__pill-content">
-                  <div className="about__pill-row">
-                    <span className="about__live-dot" />
-                    <strong className="about__pill-title">5 Países</strong>
-                  </div>
-                  <span className="about__pill-sub">PE · ES · CO · AR · MX</span>
+                <div className="about__stat-divider" />
+                <div className="about__stat-item">
+                  <span className="about__stat-number">5</span>
+                  <span className="about__stat-label">Países con Presencia</span>
+                </div>
+                <div className="about__stat-divider" />
+                <div className="about__stat-item">
+                  <span className="about__stat-number">99.9%</span>
+                  <span className="about__stat-label">Uptime Garantizado</span>
                 </div>
               </div>
 
+              <div className="about__cta-wrap">
+                <a href="#contacto" className="about__btn-primary">
+                  <span>Solicitar Asesoría</span>
+                  <FiArrowRight size={17} />
+                </a>
+              </div>
             </div>
           </div>
 
-          {/* COLUMNA DERECHA: NARRATIVA CORPORATIVA Y 4 DIVISIONES */}
-          <div className="about__text-col">
-            <div className="about__header">
-              <div className="section-label">
-                <FiCheckCircle size={14} />
-                <span>Nosotros</span>
+          {/* COLUMNA DERECHA: MANTENIDA EN LA MISMA LÍNEA HORIZONTAL SIN CAERSE ABAJO */}
+          <div className="about__visual-col">
+            
+            {/* Barra superior con controles: Se despliega suavemente en la misma posición */}
+            <div className={`about__expanded-bar ${isExpanded ? 'about__expanded-bar--visible' : ''}`}>
+              <button
+                type="button"
+                className="about__back-btn"
+                onClick={() => setIsExpanded(false)}
+                title="Volver a información"
+              >
+                <FiChevronLeft size={18} />
+                <span>Volver al texto</span>
+              </button>
+
+              <div className="about__deck-controls-right">
+                <span className="about__deck-hint">
+                  Especialidad {activeIndex + 1} de {divisions.length}
+                </span>
+
+                <div className="about__deck-buttons">
+                  <button
+                    type="button"
+                    className="about__arrow-btn"
+                    onClick={handleRotatePrev}
+                    aria-label="Especialidad anterior"
+                    title="Anterior"
+                  >
+                    <FiArrowLeft size={18} />
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`about__arrow-btn about__arrow-btn--active ${isSpinning ? 'about__arrow-btn--spinning' : ''}`}
+                    onClick={handleRotateNext}
+                    aria-label="Girar especialidades"
+                    title="Girar especialidades"
+                  >
+                    <FiArrowRight size={18} />
+                  </button>
+                </div>
               </div>
-              <h2 className="section-title">
-                Acerca de <span className="gradient-text">Nosotros</span>
-              </h2>
             </div>
 
-            <p className="about__lead-desc">
-              En <strong>HackthonySupport</strong>, llevamos más de 12 años liderando el mercado
-              de soluciones tecnológicas en <strong>Perú, España, Colombia, Argentina y México</strong>.
-              Nuestra amplia trayectoria y compromiso inquebrantable nos han consolidado como un
-              socio tecnológico de confianza para organizaciones corporativas y empresas de todos los tamaños.
-            </p>
-
-            <p className="about__sub-desc">
-              Nos especializamos en brindar soporte técnico continuo 24/7, ciberseguridad perimetral
-              y soluciones personalizadas que optimizan procesos y blindan la integridad de tus datos.
-            </p>
-
-            {/* 4 Divisiones Especializadas */}
-            <div className="about__divisions-section">
-              <div className="about__divisions-intro">
-                <h3 className="about__divisions-heading">
-                  Estamos compuestos por 4 Divisiones Especializadas:
-                </h3>
-              </div>
-
-              <div className="about__divisions-grid">
-                {divisionsData.map((div, i) => {
+            {/* Cascada de las 4 tarjetas: En la misma fila, se abren de IZQUIERDA a DERECHA */}
+            <motion.div
+              className="about__deck-container"
+              animate={isSpinning ? { rotateY: [0, 20, -10, 0], scale: [1, 0.98, 1.01, 1] } : {}}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className={`about__cards-cascade ${isExpanded ? 'about__cards-cascade--expanded' : 'about__cards-cascade--initial'}`}>
+                {divisions.map((div, i) => {
+                  const isCurrentActive = activeIndex === i;
+                  const isHovered = hoveredIndex === i;
+                  const isEffectiveExpanded = isExpanded ? (hoveredIndex !== null ? isHovered : isCurrentActive) : (i === 0);
                   const Icon = div.icon;
-                  const isActive = activeDiv === i;
+                  const isHidden = !isExpanded && i > 0;
+
                   return (
                     <div
-                      key={div.code}
-                      className={`about__division-card ${isActive ? 'about__division-card--active' : ''}`}
-                      onClick={() => setActiveDiv(i)}
-                      onMouseEnter={() => setActiveDiv(i)}
+                      key={div.id}
+                      className={`about__card ${isEffectiveExpanded ? 'about__card--expanded' : 'about__card--collapsed'} ${isCurrentActive ? 'about__card--selected' : ''} ${isHidden ? 'about__card--hidden' : ''}`}
+                      onMouseEnter={() => isExpanded && setHoveredIndex(i)}
+                      onMouseLeave={() => isExpanded && setHoveredIndex(null)}
+                      onClick={() => handleCardClick(i)}
                     >
-                      <div className="about__div-top">
-                        <div className="about__div-badge-wrap">
-                          <span className="about__div-code">{div.code}</span>
-                          <span className="about__div-tag">{div.tag}</span>
+                      <img
+                        src={div.image}
+                        alt={div.title}
+                        className="about__card-bg-img"
+                        loading="lazy"
+                      />
+                      <div className="about__card-overlay" />
+
+                      {/* Header de la tarjeta */}
+                      <div className="about__card-header">
+                        <div className="about__card-badge">
+                          <span className="about__card-code">{div.code}</span>
+                          <span className="about__card-tag">{div.tag}</span>
                         </div>
-                        <div className="about__div-icon-box">
-                          <Icon size={18} />
+                        <div className="about__card-icon-circle">
+                          <Icon size={16} />
                         </div>
                       </div>
 
-                      <h4 className="about__div-title">{div.title}</h4>
-                      <p className="about__div-desc">{div.description}</p>
+                      {/* Contenido inferior */}
+                      <div className="about__card-body">
+                        <h4 className="about__card-title">{div.title}</h4>
 
-                      {/* Capacidades desplegadas con animación suave y ligera */}
-                      <div
-                        className="about__div-expandable"
-                        aria-hidden={!isActive}
-                      >
-                        <div className="about__div-expandable-content">
-                          <div className="about__div-highlights">
-                            {div.highlights.map((h, hIdx) => (
-                              <span
-                                key={hIdx}
-                                className="about__div-chip"
-                                style={{ '--chip-delay': `${hIdx * 50}ms` }}
-                              >
-                                <span className="about__div-chip-check">✓</span>
+                        {/* Botón trigger en estado inicial (solo en tarjeta 0) */}
+                        {!isExpanded && i === 0 && (
+                          <div className="about__single-action-trigger">
+                            <span className="about__single-action-text">Presiona para ver las 4 divisiones</span>
+                            <span className="about__single-action-icon">
+                              <FiArrowRight size={18} />
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Detalles de la tarjeta en modo expandido */}
+                        <div className={`about__card-details ${isExpanded && isEffectiveExpanded ? 'about__card-details--open' : ''}`}>
+                          <p className="about__card-desc">{div.shortDesc}</p>
+
+                          <div className="about__card-highlights">
+                            {div.highlights.map((h, idx) => (
+                              <span key={idx} className="about__card-chip">
+                                <FiCheck size={12} className="about__card-chip-icon" />
                                 <span>{h}</span>
                               </span>
                             ))}
@@ -174,14 +250,7 @@ export default function About() {
                   );
                 })}
               </div>
-            </div>
-
-            <div className="about__cta-wrap">
-              <a href="#contacto" className="btn btn-primary about__btn">
-                <span>Contactar con nuestro equipo</span>
-                <FiArrowRight size={18} />
-              </a>
-            </div>
+            </motion.div>
 
           </div>
 

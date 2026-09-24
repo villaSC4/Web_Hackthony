@@ -4,23 +4,21 @@ import logo from '../../img/logotipo_oficial-hackthonyperu.png';
 import './Navbar.css';
 
 const navLinks = [
-  { href: '#inicio', label: 'Inicio' },
-  { href: '#nosotros', label: 'Nosotros' },
   { href: '#servicios', label: 'Servicios' },
-  { href: '#partners', label: 'Clientes & Partners' },
-  { href: '#soluciones', label: 'Asesor TI' },
-  { href: '#productos', label: 'Equipos & Licencias' },
+  { href: '#productos', label: 'Equipos' },
+  { href: '#nosotros', label: 'Nosotros' },
   { href: '#testimonios', label: 'Testimonios' },
+  { href: '#partners', label: 'Clientes' },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState('#inicio');
+  const [activeLink, setActiveLink] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      setScrolled(window.scrollY > 30);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -34,12 +32,12 @@ export default function Navbar() {
   return (
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner container">
-        {/* Logo Oficial Hackthony Support - Libre sin encapsular */}
+        {/* Logo Oficial Hackthony Support - Estilo Clay limpio */}
         <a href="#inicio" className="navbar__logo" onClick={() => handleLinkClick('#inicio')} aria-label="Hackthony Support">
           <img src={logo} alt="Hackthony Support" className="navbar__logo-img" />
         </a>
 
-        {/* Desktop Nav Links */}
+        {/* Desktop Nav Links — Enlaces limpios sin cápsulas */}
         <nav className="navbar__nav">
           <ul className="navbar__links">
             {navLinks.map((link) => (
@@ -56,24 +54,25 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        {/* CTA Button Estilo Clay Pill */}
-        <a
-          href="#contacto"
-          className="btn btn-primary navbar__cta"
-          onClick={() => handleLinkClick('#contacto')}
-        >
-          <span>Hablemos</span>
-          <FiArrowRight size={15} />
-        </a>
+        {/* CTA Button — Píldora negra minimalista estilo Clay */}
+        <div className="navbar__action">
+          <a
+            href="#contacto"
+            className="navbar__cta"
+            onClick={() => handleLinkClick('#contacto')}
+          >
+            <span>Contacto</span>
+          </a>
 
-        {/* Hamburger Mobile */}
-        <button
-          className={`navbar__hamburger ${menuOpen ? 'navbar__hamburger--open' : ''}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Abrir menú"
-        >
-          {menuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
-        </button>
+          {/* Hamburger Mobile */}
+          <button
+            className={`navbar__hamburger ${menuOpen ? 'navbar__hamburger--open' : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Abrir menú"
+          >
+            {menuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}
@@ -90,15 +89,14 @@ export default function Navbar() {
               </a>
             </li>
           ))}
-          <li style={{ marginTop: '12px' }}>
+          <li style={{ marginTop: '16px' }}>
             <a
               href="#contacto"
-              className="btn btn-primary"
-              style={{ width: '100%', justifyContent: 'center' }}
+              className="navbar__cta"
+              style={{ display: 'flex', width: '100%', justifyContent: 'center' }}
               onClick={() => handleLinkClick('#contacto')}
             >
-              <span>Solicitar Diagnóstico TI</span>
-              <FiArrowRight size={16} />
+              <span>Contacto</span>
             </a>
           </li>
         </ul>

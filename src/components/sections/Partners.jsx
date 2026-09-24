@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiCheckCircle, 
   FiAward, 
@@ -221,9 +222,19 @@ export default function Partners() {
 
   return (
     <section className="partners section" id="partners" ref={sectionRef}>
-      {/* Header Estilo Clay.global */}
+      {/* Luces ambientales sutiles */}
+      <div className="partners__ambient-glow partners__ambient-glow--left" />
+      <div className="partners__ambient-glow partners__ambient-glow--right" />
+
+      {/* Header Estilo Clay.global con animación de entrada */}
       <div className="container">
-        <div className={`partners__header ${visible ? 'partners__header--visible' : ''}`}>
+        <motion.div
+          className="partners__header"
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="section-label">
             <FiAward size={15} />
             <span>Alianzas Oficiales & Clientes</span>
@@ -235,11 +246,17 @@ export default function Partners() {
           <p className="section-subtitle">
             Desde fabricantes globales con licencias y certificaciones oficiales, hasta empresas líderes que confían en HackAntony para mantener sus sistemas seguros y operativos 24/7.
           </p>
-        </div>
+        </motion.div>
       </div>
 
       {/* Marquee Carrusel Continuo con Logos Vectoriales Oficiales */}
-      <div className="partners__marquee-wrap">
+      <motion.div
+        className="partners__marquee-wrap"
+        initial={{ opacity: 0, scale: 0.97 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      >
         <div className="partners__fade partners__fade--left" />
         <div className="partners__fade partners__fade--right" />
         <div className="partners__marquee">
@@ -255,12 +272,18 @@ export default function Partners() {
             })}
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Directorio Interactivo Estilo Clay.global/clients */}
       <div className="container partners__directory-container">
-        {/* Filtros estilo Clay Pills */}
-        <div className="partners__filters">
+        {/* Filtros estilo Clay Pills con animación */}
+        <motion.div
+          className="partners__filters"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <div className="partners__filters-scroll">
             {filterCategories.map(cat => (
               <button
@@ -287,19 +310,28 @@ export default function Partners() {
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* Lista del Directorio (Filas interactivas con efecto de spotlighting Clay) */}
+        {/* Lista del Directorio con animación escalonada al scroll */}
         <div 
           className={`partners__directory-list ${hoveredId ? 'has-hovered' : ''}`}
           onMouseLeave={() => setHoveredId(null)}
         >
-          {filteredItems.map(item => {
+          {filteredItems.map((item, idx) => {
             const isHovered = hoveredId === item.id;
             return (
-              <div 
+              <motion.div 
                 key={item.id} 
                 className={`directory-row ${isHovered ? 'directory-row--active' : ''}`}
+                initial={{ opacity: 0, x: -30, y: 15 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: false, amount: 0.15 }}
+                transition={{
+                  duration: 0.55,
+                  delay: Math.min(idx * 0.05, 0.35),
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                whileHover={{ y: -3, scale: 1.008 }}
                 onMouseEnter={() => setHoveredId(item.id)}
                 onClick={() => setSelectedClient(item)}
               >
@@ -307,7 +339,7 @@ export default function Partners() {
                   <div className="directory-row__identity">
                     <div 
                       className="directory-row__indicator" 
-                      style={{ backgroundColor: item.badgeColor }} 
+                      style={{ backgroundColor: item.badgeColor === '#000000' ? '#2563EB' : item.badgeColor }} 
                     />
                     <div>
                       <h3 className="directory-row__name">{item.name}</h3>
@@ -343,7 +375,7 @@ export default function Partners() {
                     <FiArrowRight size={13} />
                   </a>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

@@ -1,181 +1,176 @@
-import { useState } from 'react';
-import {
-  FiArrowRight,
-  FiChevronDown,
-  FiShield,
-  FiUsers,
-  FiClock,
-  FiCheckCircle
-} from 'react-icons/fi';
-import videoWebSrc from '../../video/Video_web.mp4';
-import { countryData } from '../ui/CountryFlags';
+import { useState, useEffect } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { FiArrowRight, FiMessageCircle } from 'react-icons/fi';
+import heroImg from '../../img/hero.png';
 import './Hero.css';
 
 export default function Hero() {
-  const [activeCountry, setActiveCountry] = useState(countryData[0]);
-
   const whatsappUrl =
     'https://wa.me/51994520017?text=Hola%20Hackthony%20Support%2C%20solicito%20un%20diagn%C3%B3stico%20t%C3%A9cnico%20y%20asesor%C3%ADa%20para%20mi%20empresa.';
 
-  // Las 3 tarjetas fundacionales inspiradas en el sitio original (Asesoría comercial, Clientes satisfechos, Garantía)
-  const foundationCards = [
-    {
-      id: 'asesoria',
-      icon: <FiShield className="hero__card-icon" />,
-      tag: '12+ Años de Trayectoria',
-      tagType: 'neutral',
-      title: 'Asesoría Especializada',
-      subtitle: 'Consultoría TI & Ciberseguridad',
-      description:
-        'Asesoramiento técnico personalizado por ingenieros certificados. Blindaje perimetral activo frente a amenazas y auditorías de vulnerabilidad.',
-      highlight: 'Soporte MikroTik & Fortinet'
-    },
-    {
-      id: 'clientes',
-      icon: <FiUsers className="hero__card-icon" />,
-      tag: '99.9% Uptime Garantizado',
-      tagType: 'featured',
-      title: 'Clientes Satisfechos',
-      subtitle: '+500 Empresas Respaldadas',
-      description:
-        'Continuidad operativa y alta disponibilidad 24/7 en servidores cloud, enlaces de fibra y redes corporativas de misión crítica.',
-      highlight: 'Continuidad Operativa 24/7'
-    },
-    {
-      id: 'garantia',
-      icon: <FiClock className="hero__card-icon" />,
-      tag: 'SLA < 15 Minutos',
-      tagType: 'neutral',
-      title: 'Garantía & Respaldo SLA',
-      subtitle: 'Respuesta Inmediata',
-      description:
-        'Mesa de ayuda helpdesk con tiempos de respuesta menores a 15 minutos. Soporte presencial o remoto y respaldo directo de fabricantes.',
-      highlight: 'Mesa de Ayuda Helpdesk'
-    }
-  ];
+  // Mouse tilt tracking para dar sensación de que el objeto "está vivo" y reacciona al usuario
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Físicas spring ultrasuaves tipo Apple/Clay
+  const springConfig = { damping: 25, stiffness: 120, mass: 0.5 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  // Parallax interactivo sutil (rotación 3D y desplazamiento)
+  const rotateX = useTransform(smoothY, [-0.5, 0.5], [12, -12]);
+  const rotateY = useTransform(smoothX, [-0.5, 0.5], [-14, 14]);
+  const translateX = useTransform(smoothX, [-0.5, 0.5], [-16, 16]);
+  const translateY = useTransform(smoothY, [-0.5, 0.5], [-16, 16]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
   return (
-    <section className="hero" id="inicio">
-      {/* Video_web.mp4 — Fondo cinematográfico del hero */}
-      <div className="hero__video-bg">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="hero__video"
-          src={videoWebSrc}
-          preload="auto"
-        />
-        <div className="hero__video-overlay" />
-      </div>
-
-      {/* Halos y retícula decorativa */}
-      <div className="hero__ambient hero__ambient--1" />
-      <div className="hero__ambient hero__ambient--2" />
-      <div className="hero__grid-pattern" />
+    <section 
+      className="hero" 
+      id="inicio"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Luz ambiental sutil de estudio Clay */}
+      <div className="hero__studio-light" />
+      <div className="hero__radial-glow" />
 
       <div className="container hero__container">
-        {/* BLOQUE CENTRAL (Inspirado en la composición original) */}
-        <div className="hero__content">
-          
-          {/* BANDERAS CIRCULARES PROMINENTES (ESENCIA DEL ORIGINAL) */}
-          <div className="hero__flags-wrapper">
-            <div className="hero__flags-row" role="tablist" aria-label="Países con presencia activa">
-              {countryData.map((country) => {
-                const FlagComponent = country.flag;
-                const isSelected = activeCountry.code === country.code;
-                return (
-                  <button
-                    key={country.code}
-                    type="button"
-                    onClick={() => setActiveCountry(country)}
-                    className={`hero__flag-disc ${isSelected ? 'hero__flag-disc--active' : ''}`}
-                    title={`${country.name}: ${country.city} - ${country.detail}`}
-                    aria-label={`Seleccionar ${country.name}`}
-                  >
-                    <FlagComponent
-                      width="100%"
-                      height="100%"
-                      preserveAspectRatio="xMidYMid slice"
-                      style={{ borderRadius: '50%', boxShadow: 'none' }}
-                    />
-                    {country.code === 'pe' && (
-                      <span className="hero__flag-badge-sede" title="Sede Principal">SEDE</span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+        {/* COLUMNA IZQUIERDA: Minimalismo puro, tipografía impactante, muy poco texto */}
+        <div className="hero__left">
 
-          {/* TÍTULO PRINCIPAL — Exactamente como en la web original */}
-          <h1 className="hero__title">
-            Soluciones tecnológicas{' '}
-            <span className="hero__title-accent">adaptadas</span> a tus necesidades
-          </h1>
+          <motion.h1
+            className="hero__title"
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            Soluciones tecnológicas adaptadas a tu empresa
+          </motion.h1>
 
-          {/* SUBTÍTULO — Texto original de la web */}
-          <p className="hero__subtitle">
-            Brindamos soluciones tecnológicas que ayudan a las empresas a innovar,
-            automatizar y crecer. Más de <strong>12 años de experiencia</strong> respaldan nuestro
-            trabajo, brindando acceso a asesoramiento técnico experto.
-          </p>
+          <motion.p
+            className="hero__subtitle"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            Más de 12 años brindando consultoría especializada, infraestructura cloud y soporte técnico de misión crítica.
+          </motion.p>
 
-          {/* BOTONES DE ACCIÓN */}
-          <div className="hero__actions">
-            {/* Botón azul principal — "Ver Servicios" como en el original */}
-            <a href="#servicios" className="btn hero__btn-cta">
-              <FiChevronDown size={17} className="hero__btn-icon-bounce" />
-              <span>Ver Servicios</span>
+          <motion.div
+            className="hero__actions"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <a href="#servicios" className="hero__btn-primary">
+              <span>Explorar Servicios</span>
+              <FiArrowRight size={17} />
             </a>
 
-            {/* Botón outline — Diagnóstico gratuito */}
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn hero__btn-services"
+              className="hero__btn-secondary"
             >
-              <span>Solicitar Diagnóstico</span>
-              <FiArrowRight size={16} />
+              <FiMessageCircle size={17} />
+              <span>Contáctanos</span>
             </a>
-          </div>
+          </motion.div>
         </div>
 
-        {/* 3 BLOQUES FUNDACIONALES EN LA BASE (Directamente del original: Asesoría, Clientes Satisfechos, Garantía) */}
-        <div className="hero__foundation">
-          <div className="hero__foundation-grid">
-            {foundationCards.map((card) => {
-              const isCenter = card.id === 'clientes';
-              return (
-                <div
-                  key={card.id}
-                  className={`hero__foundation-card ${isCenter ? 'hero__foundation-card--featured' : ''}`}
-                >
-                  <div className="hero__card-top">
-                    <div className="hero__card-icon-wrap">{card.icon}</div>
-                    <span className={`hero__card-tag hero__card-tag--${card.tagType}`}>
-                      {card.tag}
-                    </span>
-                  </div>
+        {/* COLUMNA DERECHA: Objeto 3D hero.png con animación viva, orgánica y activa */}
+        <div className="hero__right">
+          <motion.div
+            className="hero__stage"
+            style={{
+              rotateX,
+              rotateY,
+              x: translateX,
+              y: translateY,
+            }}
+          >
+            {/* Animación continua viva y flotante (movimiento orgánico de un lado a otro) */}
+            <motion.div
+              className="hero__object-wrapper"
+              animate={{
+                y: [-16, 18, -12, 16, -16],
+                x: [-18, 16, -14, 18, -18],
+                rotateZ: [-3, 3.5, -2, 2.5, -3],
+                scale: [1, 1.025, 0.985, 1.02, 1],
+              }}
+              transition={{
+                duration: 9.5,
+                ease: 'easeInOut',
+                repeat: Infinity,
+              }}
+            >
+              <img
+                src={heroImg}
+                alt="Hackantony Tech Object"
+                className="hero__object-img"
+                draggable={false}
+              />
 
-                  <h3 className="hero__card-title">{card.title}</h3>
-                  <div className="hero__card-subtitle">{card.subtitle}</div>
-                  <p className="hero__card-desc">{card.description}</p>
+              {/* Orbes flotantes animados (estilo Clay) que orbitan con vida */}
+              <motion.div
+                className="hero__orb hero__orb--purple"
+                animate={{
+                  y: [12, -18, 14, -12, 12],
+                  x: [-10, 14, -12, 10, -10],
+                  scale: [1, 1.15, 0.95, 1.1, 1],
+                }}
+                transition={{
+                  duration: 6.5,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                }}
+              />
 
-                  <div className="hero__card-footer">
-                    <FiCheckCircle className="hero__card-check-icon" />
-                    <span>{card.highlight}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+              <motion.div
+                className="hero__orb hero__orb--amber"
+                animate={{
+                  y: [-14, 16, -10, 14, -14],
+                  x: [12, -14, 10, -12, 12],
+                  scale: [1, 0.9, 1.12, 0.95, 1],
+                }}
+                transition={{
+                  duration: 7.8,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                }}
+              />
+            </motion.div>
+
+            {/* Sombra viva en el suelo que reacciona a la elevación */}
+            <motion.div
+              className="hero__floor-shadow"
+              animate={{
+                scale: [1, 0.88, 1.05, 0.92, 1],
+                opacity: [0.55, 0.35, 0.65, 0.4, 0.55],
+              }}
+              transition={{
+                duration: 9.5,
+                ease: 'easeInOut',
+                repeat: Infinity,
+              }}
+            />
+          </motion.div>
         </div>
-
       </div>
     </section>
   );
 }
-

@@ -1,16 +1,54 @@
-# React + Vite
+# Hackthony Support — Plataforma Web Corporativa
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Sitio web corporativo de **Hackthony Support**, especializado en soluciones integrales de infraestructura TI, soporte técnico 24/7, ciberseguridad, consultoría y equipamiento tecnológico para empresas en Perú e internacionalmente.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologías
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19**
+- **Vite 8**
+- **Framer Motion** (Animaciones fluidas y microinteracciones)
+- **Lenis** (Smooth scroll de alto rendimiento)
+- **Swiper 14** (Carrusel 3D Coverflow interactivo para catálogo)
+- **React Icons**
+- **Canvas Confetti**
+- **Vanilla CSS** con sistema de diseño modular y paleta de alto contraste
 
-## React Compiler
+## 🛠️ Instalación y Desarrollo Local
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/villaSC4/Web_Hackthony.git
+   cd Web_Hackthony
+   ```
 
-## Expanding the Oxlint configuration
+2. Instalar dependencias:
+   ```bash
+   npm install
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+3. Iniciar el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+
+4. Construir para producción:
+   ```bash
+   npm run build
+   ```
+
+5. Probar el bundle de producción:
+   ```bash
+   npm run preview
+   ```
+
+## 🌐 Despliegue en Vercel
+
+El proyecto incluye el archivo `vercel.json` preconfigurado con reglas de enrutamiento SPA y cabeceras de caché:
+
+1. Conecta tu repositorio de GitHub `villaSC4/Web_Hackthony` en el dashboard de [Vercel](https://vercel.com).
+2. Parámetros automáticos detectados por Vercel:
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
+3. Haz clic en **Deploy**. Cada `git push` a la rama `main` disparará un nuevo despliegue automático.

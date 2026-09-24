@@ -14,10 +14,7 @@ import Hero from './components/sections/Hero';
 import ShowreelZoom from './components/sections/ShowreelZoom';
 import Stats from './components/sections/Stats';
 import Partners from './components/sections/Partners';
-import StickyShowcase from './components/sections/StickyShowcase';
 import Services from './components/sections/Services';
-import SolutionAdvisor from './components/sections/SolutionAdvisor';
-import GlobalReach from './components/sections/GlobalReach';
 import Products from './components/sections/Products';
 import About from './components/sections/About';
 import WhyUs from './components/sections/WhyUs';
@@ -58,14 +55,11 @@ function App() {
         <ShowreelZoom />
         <About />
         <Stats />
-        <Partners />
-        <StickyShowcase />
         <Services />
-        <SolutionAdvisor />
-        <GlobalReach />
         <Products />
         <WhyUs />
         <Testimonials />
+        <Partners />
         <CTA />
         <Contact />
       </main>

@@ -225,19 +225,23 @@ ul, ol {
 .whyus,
 .stats,
 .products,
-.solution-advisor,
-.cta-section,
-.sticky-showcase {
-  background-color: #F8FAFC !important;
-  color: #0F172A !important;
+.partners,
+.testimonials,
+.testimonials-modern,
+.contact,
+.cta-section {
+  background-color: #FAFAFC;
+  color: #0F172A;
 }
 
 .whyus .section-label,
 .stats .section-label,
 .products .section-label,
-.solution-advisor .section-label,
-.cta-section .section-label,
-.sticky-showcase .section-label {
+.partners .section-label,
+.testimonials .section-label,
+.testimonials-modern .testimonials-modern__badge,
+.contact .section-label,
+.cta-section .section-label {
   color: #2563EB !important;
   background: rgba(37, 99, 235, 0.08) !important;
   border: 1px solid rgba(37, 99, 235, 0.2) !important;
@@ -246,9 +250,10 @@ ul, ol {
 .whyus .section-title,
 .stats .section-title,
 .products .section-title,
-.solution-advisor .section-title,
-.cta-section .section-title,
-.sticky-showcase .section-title {
+.partners .section-title,
+.testimonials .section-title,
+.contact .section-title,
+.cta-section .section-title {
   color: #0F172A !important;
   text-shadow: none !important;
 }
@@ -256,9 +261,10 @@ ul, ol {
 .whyus .section-title .gradient-text,
 .stats .section-title .gradient-text,
 .products .section-title .gradient-text,
-.solution-advisor .section-title .gradient-text,
-.cta-section .section-title .gradient-text,
-.sticky-showcase .section-title .gradient-text {
+.partners .section-title .gradient-text,
+.testimonials .section-title .gradient-text,
+.contact .section-title .gradient-text,
+.cta-section .section-title .gradient-text {
   background: linear-gradient(135deg, #2563EB 0%, #0EA5E9 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
@@ -268,49 +274,37 @@ ul, ol {
 .whyus .section-subtitle,
 .stats .section-subtitle,
 .products .section-subtitle,
-.solution-advisor .section-subtitle,
-.cta-section .section-subtitle,
-.sticky-showcase .section-subtitle {
-  color: #64748B !important;
+.partners .section-subtitle,
+.testimonials .section-subtitle,
+.contact .section-subtitle,
+.cta-section .section-subtitle {
+  color: #475569 !important;
   text-shadow: none !important;
 }
 
 /* ============================================
-   SECCIONES OSCURAS (Hero, Partners, Services, Contact, etc.)
+   SECCIONES OSCURAS (Hero, ShowreelZoom)
    ============================================ */
 .section--dark,
 .hero,
-.showreel-zoom,
-.partners,
-.global-reach,
-.testimonials,
-.contact {
+.showreel-zoom {
   color: #FFFFFF;
 }
 
 .section--dark .section-label,
-.partners .section-label,
-.global-reach .section-label,
-.testimonials .section-label,
-.contact .section-label {
+.hero .section-label {
   color: #FFFFFF !important;
   background: rgba(255, 255, 255, 0.1) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 .section--dark .section-title,
-.partners .section-title,
-.global-reach .section-title,
-.testimonials .section-title,
-.contact .section-title {
+.hero .section-title {
   color: #FFFFFF !important;
 }
 
 .section--dark .section-title .gradient-text,
-.partners .section-title .gradient-text,
-.global-reach .section-title .gradient-text,
-.testimonials .section-title .gradient-text,
-.contact .section-title .gradient-text {
+.hero .section-title .gradient-text {
   background: linear-gradient(135deg, #FFFFFF 30%, #93C5FD 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
@@ -318,10 +312,7 @@ ul, ol {
 }
 
 .section--dark .section-subtitle,
-.partners .section-subtitle,
-.global-reach .section-subtitle,
-.testimonials .section-subtitle,
-.contact .section-subtitle {
+.hero .section-subtitle {
   color: rgba(255, 255, 255, 0.72) !important;
 }
 

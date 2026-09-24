@@ -18,7 +18,7 @@
 }
 
 /* ============================================
-   CUSTOM CURSOR — PURE BLACK & WHITE LUXURY
+   CUSTOM CURSOR — AZUL ELÉCTRICO HACKANTONY
    ============================================ */
 .custom-cursor {
   position: fixed;
@@ -29,18 +29,20 @@
   margin-top: -18px;
   margin-left: -18px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border: 1.5px solid rgba(37, 99, 235, 0.65);
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.2);
   pointer-events: none;
   z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: 
-    width 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
-    height 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
-    margin 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+    margin 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
     background-color 0.2s ease,
     border-color 0.2s ease,
+    box-shadow 0.2s ease,
     opacity 0.2s ease;
   will-change: transform;
 }
@@ -54,7 +56,8 @@
   margin-top: -3px;
   margin-left: -3px;
   border-radius: 50%;
-  background-color: #FFFFFF;
+  background-color: #2563EB;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.7);
   pointer-events: none;
   z-index: 100000;
   will-change: transform;
@@ -67,8 +70,9 @@
   height: 52px;
   margin-top: -26px;
   margin-left: -26px;
-  background-color: rgba(255, 255, 255, 0.12);
-  border-color: #FFFFFF;
+  background-color: rgba(37, 99, 235, 0.12);
+  border-color: #2563EB;
+  box-shadow: 0 0 22px rgba(37, 99, 235, 0.35);
 }
 
 /* State: Hover over client list item */
@@ -78,13 +82,13 @@
   margin-top: -16px;
   margin-left: -48px;
   border-radius: 9999px;
-  background-color: #FFFFFF;
-  border-color: #FFFFFF;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.25);
+  background-color: #2563EB;
+  border-color: #2563EB;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.45);
 }
 
 .custom-cursor--client .custom-cursor__text {
-  color: #000000 !important;
+  color: #FFFFFF !important;
   font-weight: 800;
 }
 
@@ -92,19 +96,20 @@
   opacity: 0;
 }
 
+/* State: Hover over WhatsApp CTA */
 .custom-cursor--whatsapp {
   width: 90px;
   height: 32px;
   margin-top: -16px;
   margin-left: -45px;
   border-radius: 9999px;
-  background-color: #FFFFFF;
-  border-color: #FFFFFF;
-  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
+  background-color: #2563EB;
+  border-color: #2563EB;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
 }
 
 .custom-cursor--whatsapp .custom-cursor__text {
-  color: #000000 !important;
+  color: #FFFFFF !important;
   font-weight: 800;
 }
 
@@ -113,22 +118,23 @@
 }
 
 .custom-cursor__text {
-  font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-display, 'Outfit', 'Inter', sans-serif);
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.1em;
-  color: #000000;
+  color: #FFFFFF;
   text-transform: uppercase;
 }
 
 /* State: Typing in input field */
 .custom-cursor--text {
-  width: 4px;
+  width: 3px;
   height: 24px;
   margin-top: -12px;
-  margin-left: -2px;
+  margin-left: -1.5px;
   border-radius: 2px;
-  background-color: #FFFFFF;
+  background-color: #2563EB;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
   border: none;
 }
 
