@@ -1,233 +1,320 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FiCheckCircle, 
   FiAward, 
-  FiShield, 
-  FiZap, 
-  FiBriefcase, 
-  FiArrowRight,
-  FiFilter,
+  FiCheckCircle, 
+  FiChevronLeft, 
+  FiChevronRight, 
+  FiPause, 
+  FiPlay, 
+  FiArrowRight, 
+  FiExternalLink, 
   FiX,
-  FiExternalLink
+  FiZap,
+  FiShield,
+  FiLayers
 } from 'react-icons/fi';
-import { partnersData } from '../ui/PartnerLogos';
+import { 
+  LogoMicrosoft, 
+  LogoMikroTik, 
+  LogoPandaSecurity, 
+  LogoSectigo, 
+  LogoAdobe, 
+  LogoAnyDesk, 
+  LogoAzure, 
+  LogoBarracuda, 
+  LogoFortinet, 
+  LogoCisco,
+  partnersData 
+} from '../ui/PartnerLogos';
 import './Partners.css';
 
-// Infinite marquee partners
+// Marquee continuo superior
 const marqueePartners = [...partnersData, ...partnersData];
 
-// Full Directory (Clay.global style: Partners + Corporate Clients with exact scopes)
-const directoryItems = [
+// Las 10 Alianzas Tecnológicas Oficiales de Big Tech & Ciberseguridad para el carrusel 360°
+const alliance3DPartners = [
   {
-    id: 'msft',
+    id: 'microsoft',
     name: 'Microsoft',
-    type: 'partner',
-    category: 'cloud',
-    categoryLabel: 'Big Tech & Cloud',
-    tier: 'Gold Cloud Solutions Partner',
-    oneLiner: 'Licenciamiento empresarial Microsoft 365, despliegue de nube híbrida Azure y auditoría de software legal.',
-    deliverables: ['Microsoft 365 Business & Enterprise', 'Despliegue de Azure Cloud', 'Auditoría y Regularización de Software'],
+    component: LogoMicrosoft,
+    category: 'Big Tech & Cloud',
+    tier: 'Gold Solutions Partner',
+    accentColor: '#00A4EF',
+    oneLiner: 'Licenciamiento empresarial Microsoft 365, despliegue de Azure Cloud y auditoría de software legal.',
+    deliverables: ['Microsoft 365 Business & Enterprise', 'Despliegue Azure Cloud', 'Auditoría y Regularización'],
     metric: '99.9% Cloud Uptime',
-    status: 'Alianza Oficial',
-    badgeColor: '#000000',
+    status: 'Certificación Gold',
     url: 'https://www.microsoft.com',
   },
   {
     id: 'mikrotik',
     name: 'MikroTik',
-    type: 'partner',
-    category: 'networks',
-    categoryLabel: 'Redes & Enrutamiento',
+    component: LogoMikroTik,
+    category: 'Redes & Enrutamiento',
     tier: 'Certified Network Partner',
-    oneLiner: 'Arquitectura de enrutamiento troncal, conmutación de alta disponibilidad y firewalls perimetrales RouterOS.',
-    deliverables: ['Configuración MikroTik RouterOS', 'Balanceo de Carga Multi-WAN', 'VPN Corporativas Site-to-Site'],
+    accentColor: '#D32F2F',
+    oneLiner: 'Arquitectura de enrutamiento troncal, conmutación de alta disponibilidad y firewalls RouterOS.',
+    deliverables: ['Configuración RouterOS', 'Balanceo de Carga Multi-WAN', 'VPN Site-to-Site Cifradas'],
     metric: 'Balanceo Multi-WAN',
     status: 'Ingenieros Certificados',
-    badgeColor: '#000000',
     url: 'https://mikrotik.com',
-  },
-  {
-    id: 'victor-ing',
-    name: 'Víctor Ingenieros',
-    type: 'client',
-    category: 'ti',
-    categoryLabel: 'Ingeniería & Construcción',
-    tier: 'Cliente Corporativo',
-    oneLiner: 'Transformación integral de infraestructura de red, seguridad perimetral y Mesa de Ayuda técnica continua.',
-    deliverables: ['Mesa de Ayuda 24/7', 'Cableado Estructurado y Fibra', 'Mantenimiento Preventivo de Servidores'],
-    metric: '+35% Eficiencia Operativa',
-    status: 'Caso de Éxito',
-    badgeColor: '#000000',
-    url: '#contacto',
   },
   {
     id: 'fortinet',
     name: 'Fortinet',
-    type: 'partner',
-    category: 'security',
-    categoryLabel: 'Ciberseguridad Perimetral',
+    component: LogoFortinet,
+    category: 'Ciberseguridad Perimetral',
     tier: 'Network Security Partner',
-    oneLiner: 'Implementación de Firewalls FortiGate de próxima generación (NGFW) y protección contra amenazas Zero-Day.',
-    deliverables: ['Firewalls FortiGate NGFW', 'Filtro Web e Inspección SSL', 'Protección contra Ransomware'],
+    accentColor: '#EE3124',
+    oneLiner: 'Implementación de Firewalls FortiGate NGFW de próxima generación y blindaje contra amenazas Zero-Day.',
+    deliverables: ['Firewalls FortiGate NGFW', 'Inspección SSL Profunda', 'Protección Anti-Ransomware'],
     metric: '0 Brechas de Seguridad',
     status: 'Partner Certificado',
-    badgeColor: '#000000',
     url: 'https://www.fortinet.com',
   },
   {
     id: 'cisco',
     name: 'Cisco Systems',
-    type: 'partner',
-    category: 'networks',
-    categoryLabel: 'Infraestructura Empresarial',
+    component: LogoCisco,
+    category: 'Infraestructura Empresarial',
     tier: 'Enterprise Networking Partner',
-    oneLiner: 'Switches administrables Catalyst y Meraki para conectividad empresarial de ultra-baja latencia.',
-    deliverables: ['Switches Cisco Catalyst & Meraki', 'Segmentación de VLANs', 'Wi-Fi 6 Empresarial'],
+    accentColor: '#049FD9',
+    oneLiner: 'Switches administrables Catalyst y Meraki para conectividad troncal corporativa de ultra-baja latencia.',
+    deliverables: ['Switches Catalyst & Meraki', 'Segmentación de VLANs', 'Wi-Fi 6 Corporativo'],
     metric: 'Gigabit Troncal Estable',
     status: 'Hardware Certificado',
-    badgeColor: '#000000',
     url: 'https://www.cisco.com',
-  },
-  {
-    id: 'conecta-tel',
-    name: 'Conecta Telecomunicaciones',
-    type: 'client',
-    category: 'networks',
-    categoryLabel: 'Telecomunicaciones',
-    tier: 'Cliente Corporativo',
-    oneLiner: 'Auditoría de ciberseguridad, blindaje de servidores y optimización de flujos de datos en tiempo real.',
-    deliverables: ['Monitoreo de Red 24/7', 'Protección de Centro de Datos', 'Túneles VPN Cifrados'],
-    metric: 'Latencia Reducida a <15ms',
-    status: 'Caso de Éxito',
-    badgeColor: '#000000',
-    url: '#contacto',
   },
   {
     id: 'sectigo',
     name: 'Sectigo',
-    type: 'partner',
-    category: 'security',
-    categoryLabel: 'Certificación & PKI',
+    component: LogoSectigo,
+    category: 'Certificación & PKI',
     tier: 'Platinum SSL Provider',
-    oneLiner: 'Emisión de certificados SSL/TLS empresariales, firma de código y cifrado de comunicaciones web.',
-    deliverables: ['Certificados SSL Wildcard & EV', 'Firma de Código y Documentos', 'Infraestructura de Llave Pública'],
+    accentColor: '#00B0B9',
+    oneLiner: 'Emisión de certificados SSL/TLS empresariales, firma digital de código y cifrado web avanzado.',
+    deliverables: ['Certificados SSL Wildcard & EV', 'Firma de Código y Documentos', 'Infraestructura PKI'],
     metric: 'Cifrado SHA-256 Activo',
-    status: 'Partner Oficial',
-    badgeColor: '#000000',
+    status: 'Proveedor Platinum',
     url: 'https://sectigo.com',
-  },
-  {
-    id: 'panda',
-    name: 'Panda Security / WatchGuard',
-    type: 'partner',
-    category: 'security',
-    categoryLabel: 'Endpoint Security',
-    tier: 'Authorized Gold Partner',
-    oneLiner: 'Protección EDR perimetral contra ransomware, antivirus corporativo y filtrado web centralizado.',
-    deliverables: ['Panda Endpoint Protection Plus', 'Monitoreo EDR en Tiempo Real', 'Control de Dispositivos USB'],
-    metric: '100% Endpoints Blindados',
-    status: 'Soporte Directo',
-    badgeColor: '#000000',
-    url: 'https://www.pandasecurity.com',
-  },
-  {
-    id: 'sasait',
-    name: 'SASAIT Service',
-    type: 'client',
-    category: 'ti',
-    categoryLabel: 'Servicios de TI',
-    tier: 'Cliente Corporativo',
-    oneLiner: 'Soporte técnico integral 24/7, respaldo de datos confidenciales y continuidad operativa del negocio.',
-    deliverables: ['Helpdesk Remoto Inmediato', 'Copias de Seguridad Diarias', 'Gestión de Parches de Seguridad'],
-    metric: '99.98% Continuidad TI',
-    status: 'Caso de Éxito',
-    badgeColor: '#000000',
-    url: '#contacto',
-  },
-  {
-    id: 'anydesk',
-    name: 'AnyDesk',
-    type: 'partner',
-    category: 'ti',
-    categoryLabel: 'Acceso Remoto Seguro',
-    tier: 'Enterprise Remote Partner',
-    oneLiner: 'Plataforma oficial de asistencia remota cifrada TLS 1.2 para soporte técnico a nivel nacional e internacional.',
-    deliverables: ['Licenciamiento AnyDesk Enterprise', 'Acceso No Supervisado Seguro', 'SLA de Respuesta < 15 Minutos'],
-    metric: 'SLA < 15 Minutos',
-    status: 'Licencia Enterprise',
-    badgeColor: '#000000',
-    url: 'https://anydesk.com',
-  },
-  {
-    id: 'idea-proyectos',
-    name: 'Idea Proyectos e Inversiones',
-    type: 'client',
-    category: 'cloud',
-    categoryLabel: 'Inversiones & Consultoría',
-    tier: 'Cliente Corporativo',
-    oneLiner: 'Migración a la nube corporativa, licenciamiento de herramientas colaborativas y seguridad de bases de datos.',
-    deliverables: ['Migración de Correos a Microsoft 365', 'Seguridad en OneDrive y SharePoint', 'Capacitación al Personal'],
-    metric: 'Cero Pérdida de Datos',
-    status: 'Caso de Éxito',
-    badgeColor: '#000000',
-    url: '#contacto',
   },
   {
     id: 'adobe',
     name: 'Adobe',
-    type: 'partner',
-    category: 'cloud',
-    categoryLabel: 'Software Creativo',
+    component: LogoAdobe,
+    category: 'Software Creativo & Documental',
     tier: 'Authorized Reseller',
+    accentColor: '#FA0F00',
     oneLiner: 'Distribución y licenciamiento oficial de Creative Cloud for Teams y soluciones documentales Acrobat Pro.',
-    deliverables: ['Adobe Creative Cloud for Teams', 'Acrobat Sign y Flujo Documental', 'Consola Centralizada de Licencias'],
-    metric: 'Licencias Oficiales Auditables',
+    deliverables: ['Creative Cloud for Teams', 'Acrobat Sign y Flujo Documental', 'Consola Centralizada'],
+    metric: 'Licencias 100% Oficiales',
     status: 'Canal Oficial',
-    badgeColor: '#000000',
     url: 'https://www.adobe.com',
+  },
+  {
+    id: 'anydesk',
+    name: 'AnyDesk',
+    component: LogoAnyDesk,
+    category: 'Acceso Remoto Seguro',
+    tier: 'Enterprise Remote Partner',
+    accentColor: '#EF443B',
+    oneLiner: 'Plataforma oficial de asistencia remota cifrada TLS 1.2 para soporte técnico corporativo inmediato.',
+    deliverables: ['AnyDesk Enterprise Centralizado', 'Acceso No Supervisado Seguro', 'SLA de Respuesta Inmediata'],
+    metric: 'SLA < 15 Minutos',
+    status: 'Licencia Enterprise',
+    url: 'https://anydesk.com',
+  },
+  {
+    id: 'pandasecurity',
+    name: 'Panda Security',
+    component: LogoPandaSecurity,
+    category: 'Endpoint Security & EDR',
+    tier: 'Authorized Gold Partner',
+    accentColor: '#00A8E8',
+    oneLiner: 'Protección EDR perimetral contra ransomware, antivirus corporativo y filtrado web centralizado.',
+    deliverables: ['Endpoint Protection Plus', 'Monitoreo EDR en Tiempo Real', 'Control de Dispositivos USB'],
+    metric: '100% Endpoints Blindados',
+    status: 'Soporte Directo',
+    url: 'https://www.pandasecurity.com',
+  },
+  {
+    id: 'azure',
+    name: 'Microsoft Azure',
+    component: LogoAzure,
+    category: 'Infraestructura Cloud',
+    tier: 'Cloud Solutions Provider',
+    accentColor: '#0078D4',
+    oneLiner: 'Despliegue de máquinas virtuales, centros de datos en la nube y respaldos automáticos de alta resiliencia.',
+    deliverables: ['Servidores Virtuales Azure', 'Backup & Disaster Recovery', 'Bases de Datos Escalables'],
+    metric: '99.95% SLA Garantizado',
+    status: 'Nube Certificada',
+    url: 'https://azure.microsoft.com',
+  },
+  {
+    id: 'barracuda',
+    name: 'Barracuda Networks',
+    component: LogoBarracuda,
+    category: 'Seguridad & Backup',
+    tier: 'Certified Security Partner',
+    accentColor: '#0071C5',
+    oneLiner: 'Protección avanzada de correo empresarial contra phishing y firewalls de aplicaciones web cloud.',
+    deliverables: ['Email Security Gateway', 'Protección Anti-Phishing', 'WAF Cloud Protection'],
+    metric: '99.8% Bloqueo Spam',
+    status: 'Partner Oficial',
+    url: 'https://www.barracuda.com',
   },
 ];
 
-const filterCategories = [
-  { id: 'all', label: 'Todos los Registros' },
-  { id: 'partner', label: 'Alianzas Oficiales & Big Tech' },
-  { id: 'client', label: 'Clientes & Casos de Éxito' },
-  { id: 'security', label: 'Ciberseguridad & Perímetro' },
-  { id: 'networks', label: 'Redes & Conectividad' },
-];
-
 export default function Partners() {
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [hoveredId, setHoveredId] = useState(null);
-  const [selectedClient, setSelectedClient] = useState(null);
-  const [visible, setVisible] = useState(true);
-  const sectionRef = useRef(null);
+  const [rotation, setRotation] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [selectedPartner, setSelectedPartner] = useState(null);
+  const [radii, setRadii] = useState({ rx: 460, rz: 360 });
 
+  const stageRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const lastXRef = useRef(0);
+  const velocityRef = useRef(0);
+  const targetRotationRef = useRef(0);
+  const currentRotationRef = useRef(0);
+  const rafRef = useRef(null);
+  const autoSpeedRef = useRef(0.2); // velocidad base de giro automático
+
+  const total = alliance3DPartners.length;
+  const angleStep = 360 / total;
+
+  // Ajuste de radios de la órbita según el tamaño de pantalla
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
+    const updateRadii = () => {
+      const w = window.innerWidth;
+      if (w > 1200) {
+        setRadii({ rx: 460, rz: 350 });
+      } else if (w > 900) {
+        setRadii({ rx: 370, rz: 280 });
+      } else if (w > 640) {
+        setRadii({ rx: 280, rz: 210 });
+      } else {
+        setRadii({ rx: 175, rz: 140 });
+      }
+    };
+
+    updateRadii();
+    window.addEventListener('resize', updateRadii);
+    return () => window.removeEventListener('resize', updateRadii);
   }, []);
 
-  const filteredItems = directoryItems.filter(item => {
-    if (activeFilter === 'all') return true;
-    if (activeFilter === 'partner') return item.type === 'partner';
-    if (activeFilter === 'client') return item.type === 'client';
-    return item.category === activeFilter;
-  });
+  // Bucle de animación 360° continuo y fluido
+  useEffect(() => {
+    const loop = () => {
+      if (!isDraggingRef.current) {
+        if (!isPaused) {
+          targetRotationRef.current += autoSpeedRef.current;
+        }
+        // Suave inercia e interpolación
+        currentRotationRef.current += (targetRotationRef.current - currentRotationRef.current) * 0.1;
+      } else {
+        currentRotationRef.current = targetRotationRef.current;
+      }
+
+      setRotation(currentRotationRef.current);
+      rafRef.current = requestAnimationFrame(loop);
+    };
+
+    rafRef.current = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [isPaused]);
+
+  // Manejo de mouse steering (apuntar a los lados acelera o invierte el giro)
+  const handleStageMouseMove = (e) => {
+    if (isDraggingRef.current || !stageRef.current) return;
+    const rect = stageRef.current.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+
+    if (ratio > 0.6) {
+      // Girar hacia la derecha
+      const factor = (ratio - 0.6) / 0.4;
+      autoSpeedRef.current = 0.2 + factor * 0.8;
+    } else if (ratio < 0.4) {
+      // Girar hacia la izquierda
+      const factor = (0.4 - ratio) / 0.4;
+      autoSpeedRef.current = -(0.2 + factor * 0.8);
+    } else {
+      // En la zona central o cerca de la tarjeta frontal: velocidad suave o pausa sutil
+      autoSpeedRef.current = 0.12;
+    }
+  };
+
+  const handleStageMouseLeave = () => {
+    if (!isDraggingRef.current) {
+      autoSpeedRef.current = 0.2; // velocidad por defecto
+      setIsPaused(false);
+    }
+  };
+
+  // Drag para girar interactivamente en 3D
+  const handlePointerDown = (e) => {
+    isDraggingRef.current = true;
+    startXRef.current = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    lastXRef.current = startXRef.current;
+    velocityRef.current = 0;
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDraggingRef.current) return;
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    const delta = clientX - lastXRef.current;
+    lastXRef.current = clientX;
+
+    // Sensibilidad de giro proporcional
+    targetRotationRef.current -= delta * 0.35;
+    currentRotationRef.current = targetRotationRef.current;
+    velocityRef.current = delta;
+  };
+
+  const handlePointerUp = () => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    // Aplicar leve impulso
+    targetRotationRef.current -= velocityRef.current * 0.5;
+  };
+
+  // Rotar directamente para enfocar un partner específico al frente
+  const rotateToPartner = (idx) => {
+    const currentAngle = targetRotationRef.current % 360;
+    const targetAngle = -idx * angleStep;
+    
+    // Calcular la distancia angular más corta (-180 a 180)
+    let diff = (targetAngle - currentAngle) % 360;
+    if (diff > 180) diff -= 360;
+    if (diff < -180) diff += 360;
+
+    targetRotationRef.current = currentRotationRef.current + diff;
+  };
+
+  // Siguiente / Anterior
+  const handlePrev = useCallback(() => {
+    targetRotationRef.current += angleStep;
+  }, [angleStep]);
+
+  const handleNext = useCallback(() => {
+    targetRotationRef.current -= angleStep;
+  }, [angleStep]);
+
+  // Encontrar el partner actualmente al frente (más cercano a z máximo)
+  const normalizedRotation = (((-rotation) % 360) + 360) % 360;
+  const activeFrontIndex = Math.round(normalizedRotation / angleStep) % total;
+  const activePartner = alliance3DPartners[activeFrontIndex];
 
   return (
-    <section className="partners section" id="partners" ref={sectionRef}>
-      {/* Luces ambientales sutiles */}
+    <section className="partners section" id="partners">
+      {/* Luces ambientales tenues */}
       <div className="partners__ambient-glow partners__ambient-glow--left" />
       <div className="partners__ambient-glow partners__ambient-glow--right" />
 
-      {/* Header Estilo Clay.global con animación de entrada */}
       <div className="container">
+        {/* Cabecera Principal */}
         <motion.div
           className="partners__header"
           initial={{ opacity: 0, y: 35 }}
@@ -237,216 +324,367 @@ export default function Partners() {
         >
           <div className="section-label">
             <FiAward size={15} />
-            <span>Alianzas Oficiales & Clientes</span>
+            <span>Alianzas Oficiales & Big Tech</span>
           </div>
 
           <h2 className="section-title">
-            Colaboramos con marcas líderes y <span className="gradient-text">corporaciones innovadoras</span>
+            Certificaciones globales que <span className="gradient-text">potencian tu empresa</span>
           </h2>
           <p className="section-subtitle">
-            Desde fabricantes globales con licencias y certificaciones oficiales, hasta empresas líderes que confían en HackAntony para mantener sus sistemas seguros y operativos 24/7.
+            Explora nuestro ecosistema 360° de partners tecnológicos autorizados. Soluciones oficiales de licenciamiento, ciberseguridad perimetral y nube híbrida respaldadas directamente por los fabricantes líderes mundiales.
           </p>
         </motion.div>
       </div>
 
-      {/* Marquee Carrusel Continuo con Logos Vectoriales Oficiales */}
-      <motion.div
-        className="partners__marquee-wrap"
-        initial={{ opacity: 0, scale: 0.97 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false, amount: 0.2 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      >
+      {/* Marquee Ticker continuo superior */}
+      <div className="partners__marquee-wrap">
         <div className="partners__fade partners__fade--left" />
         <div className="partners__fade partners__fade--right" />
         <div className="partners__marquee">
           <div className="partners__track">
             {marqueePartners.map((partner, i) => {
-              const LogoComponent = partner.component;
+              const LogoComp = partner.component;
               return (
                 <div key={`${partner.id}-${i}`} className="partner-marquee-pill">
-                  <LogoComponent height={26} className="partner-marquee-svg" />
+                  <LogoComp height={26} className="partner-marquee-svg" />
                   <span className="partner-marquee-tier">{partner.tier}</span>
                 </div>
               );
             })}
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Directorio Interactivo Estilo Clay.global/clients */}
-      <div className="container partners__directory-container">
-        {/* Filtros estilo Clay Pills con animación */}
-        <motion.div
-          className="partners__filters"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <div className="partners__filters-scroll">
-            {filterCategories.map(cat => (
-              <button
-                key={cat.id}
-                className={`partners__filter-btn ${activeFilter === cat.id ? 'active' : ''}`}
-                onClick={() => setActiveFilter(cat.id)}
-                type="button"
-              >
-                {cat.id === 'all' && <FiFilter size={13} />}
-                {cat.id === 'partner' && <FiAward size={13} />}
-                {cat.id === 'client' && <FiBriefcase size={13} />}
-                {cat.id === 'security' && <FiShield size={13} />}
-                {cat.id === 'networks' && <FiZap size={13} />}
-                <span>{cat.label}</span>
-                <span className="partners__filter-count">
-                  {cat.id === 'all' 
-                    ? directoryItems.length 
-                    : directoryItems.filter(item => 
-                        cat.id === 'partner' ? item.type === 'partner' :
-                        cat.id === 'client' ? item.type === 'client' :
-                        item.category === cat.id
-                      ).length}
-                </span>
-              </button>
-            ))}
+      {/* ========================================================
+          ESCENARIO 3D CILÍNDRICO 360° (SE VE DE FONDO COMO GIRA Y VUELVE)
+          ======================================================== */}
+      <div className="partners-3d-section">
+        <div className="container">
+          <div className="partners-3d-header-info">
+            <span className="partners-3d-pill-badge">
+              <FiLayers size={13} />
+              <span>Giro Orbital 360° • Arrastra o apunta con el mouse para navegar</span>
+            </span>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Lista del Directorio con animación escalonada al scroll */}
-        <div 
-          className={`partners__directory-list ${hoveredId ? 'has-hovered' : ''}`}
-          onMouseLeave={() => setHoveredId(null)}
+        {/* Escenario 3D Interactivo */}
+        <div
+          ref={stageRef}
+          className="partners-3d-stage"
+          onMouseMove={handleStageMouseMove}
+          onMouseLeave={handleStageMouseLeave}
+          onMouseDown={handlePointerDown}
+          onMouseMoveCapture={handlePointerMove}
+          onMouseUp={handlePointerUp}
+          onTouchStart={handlePointerDown}
+          onTouchMove={handlePointerMove}
+          onTouchEnd={handlePointerUp}
         >
-          {filteredItems.map((item, idx) => {
-            const isHovered = hoveredId === item.id;
-            return (
-              <motion.div 
-                key={item.id} 
-                className={`directory-row ${isHovered ? 'directory-row--active' : ''}`}
-                initial={{ opacity: 0, x: -30, y: 15 }}
-                whileInView={{ opacity: 1, x: 0, y: 0 }}
-                viewport={{ once: false, amount: 0.15 }}
-                transition={{
-                  duration: 0.55,
-                  delay: Math.min(idx * 0.05, 0.35),
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                whileHover={{ y: -3, scale: 1.008 }}
-                onMouseEnter={() => setHoveredId(item.id)}
-                onClick={() => setSelectedClient(item)}
-              >
-                <div className="directory-row__main">
-                  <div className="directory-row__identity">
-                    <div 
-                      className="directory-row__indicator" 
-                      style={{ backgroundColor: item.badgeColor === '#000000' ? '#2563EB' : item.badgeColor }} 
-                    />
-                    <div>
-                      <h3 className="directory-row__name">{item.name}</h3>
-                      <div className="directory-row__tags">
-                        <span className="directory-tag directory-tag--type">
-                          {item.type === 'partner' ? 'Alianza Oficial' : 'Cliente Corporativo'}
-                        </span>
-                        <span className="directory-tag">{item.categoryLabel}</span>
-                      </div>
-                    </div>
+          {/* Anillo de luz en el piso del escenario 3D */}
+          <div className="partners-3d-floor-ring" />
+          <div className="partners-3d-floor-glow" />
+
+          {/* Contenedor central 3D donde orbitan las 10 tarjetas */}
+          <div className="partners-3d-orbit">
+            {alliance3DPartners.map((item, idx) => {
+              const LogoComp = item.component;
+              // Ángulo de cada tarjeta en el círculo
+              const cardAngleDeg = idx * angleStep + rotation;
+              const rad = (cardAngleDeg * Math.PI) / 180;
+              const sin = Math.sin(rad);
+              const cos = Math.cos(rad);
+
+              // Coordenadas elípticas en el espacio 3D
+              const x = sin * radii.rx;
+              const z = cos * radii.rz; // z varía de -rz (fondo) a +rz (frente)
+
+              // Normalización de profundidad (0 = fondo lejano, 1 = frente absoluto)
+              const depthNorm = (z + radii.rz) / (2 * radii.rz);
+
+              // Escala: 0.65 en el fondo -> 1.04 al frente
+              const scale = 0.65 + depthNorm * 0.39;
+
+              // Opacidad: 0.40 en el fondo (visible en el fondo como gira) -> 1.0 al frente
+              const opacity = 0.42 + depthNorm * 0.58;
+
+              // Inclinación 3D en el eje Y siguiendo la curvatura del cilindro
+              const rotateY = -sin * 26;
+
+              // Desenfoque de lente sutil para dar sensación de profundidad
+              const blurPx = (1 - depthNorm) * 2;
+
+              // zIndex para ordenar las tarjetas correctamente de atrás hacia adelante
+              const zIndex = Math.round(depthNorm * 100);
+
+              const isFront = depthNorm > 0.88;
+
+              return (
+                <div
+                  key={item.id}
+                  className={`partners-3d-card ${isFront ? 'partners-3d-card--front' : 'partners-3d-card--orbit'}`}
+                  style={{
+                    transform: `translate3d(${x}px, ${(1 - depthNorm) * -10}px, 0) scale(${scale}) rotateY(${rotateY}deg)`,
+                    opacity,
+                    filter: `blur(${blurPx}px)`,
+                    zIndex,
+                  }}
+                  onClick={() => {
+                    if (isFront) {
+                      setSelectedPartner(item);
+                    } else {
+                      rotateToPartner(idx);
+                    }
+                  }}
+                  onMouseEnter={() => {
+                    if (isFront) setIsPaused(true);
+                  }}
+                  onMouseLeave={() => {
+                    if (isFront) setIsPaused(false);
+                  }}
+                >
+                  {/* Resplandor perimetral de la tarjeta */}
+                  <div 
+                    className="partners-3d-card__glow" 
+                    style={{ background: `radial-gradient(circle at 50% 0%, ${item.accentColor}25, transparent 70%)` }}
+                  />
+
+                  {/* Cabecera de la tarjeta: Categoría y Estado */}
+                  <div className="partners-3d-card__top">
+                    <span className="partners-3d-card__category">{item.category}</span>
+                    <span 
+                      className="partners-3d-card__status"
+                      style={{ color: item.accentColor, borderColor: `${item.accentColor}35` }}
+                    >
+                      {item.status}
+                    </span>
                   </div>
 
-                  <p className="directory-row__desc">
+                  {/* Logo Oficial Amplio y Nombre de la Marca */}
+                  <div className="partners-3d-card__logo-wrap">
+                    <LogoComp height={38} className="partners-3d-card__svg" />
+                    <h3 className="partners-3d-card__name">{item.name}</h3>
+                    <span className="partners-3d-card__tier">{item.tier}</span>
+                  </div>
+
+                  {/* Descripción técnica breve */}
+                  <p className="partners-3d-card__desc">
                     {item.oneLiner}
                   </p>
-                </div>
 
-                <div className="directory-row__meta">
-                  <div className="directory-row__metric-pill">
-                    <FiCheckCircle size={13} />
-                    <span>{item.metric}</span>
+                  {/* Entregables técnicos oficiales */}
+                  <div className="partners-3d-card__deliverables">
+                    {item.deliverables.slice(0, 2).map((del, dIdx) => (
+                      <div key={dIdx} className="partners-3d-card__deliverable-item">
+                        <FiCheckCircle size={13} style={{ color: item.accentColor }} />
+                        <span>{del}</span>
+                      </div>
+                    ))}
                   </div>
 
-                  <a 
-                    href={`https://wa.me/51994520017?text=Hola%20Hackthony%2C%20quisiera%20solicitar%20informaci%C3%B3n%20sobre%20soluciones%20relacionadas%20a%20${encodeURIComponent(item.name)}.`}
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="directory-row__action"
-                    onClick={(e) => e.stopPropagation()}
-                    title={`Consultar por soluciones ${item.name}`}
-                  >
-                    <span>Consultar</span>
-                    <FiArrowRight size={13} />
-                  </a>
+                  {/* Footer de la tarjeta con métrica y botón de acción */}
+                  <div className="partners-3d-card__footer">
+                    <div className="partners-3d-card__metric">
+                      <FiZap size={13} style={{ color: item.accentColor }} />
+                      <span>{item.metric}</span>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="partners-3d-card__btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedPartner(item);
+                      }}
+                      title={`Ver detalles de alianza con ${item.name}`}
+                    >
+                      <span>Ver Alianza</span>
+                      <FiArrowRight size={13} />
+                    </button>
+                  </div>
                 </div>
-              </motion.div>
-            );
-          })}
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ========================================================
+            CONTROLES DE NAVEGACIÓN Y SELECTORES ORBITALES
+            ======================================================== */}
+        <div className="container">
+          <div className="partners-3d-controls">
+            {/* Botón Girar Izquierda */}
+            <button
+              type="button"
+              className="partners-3d-nav-btn"
+              onClick={handlePrev}
+              aria-label="Girar carrusel a la izquierda"
+              title="Girar a la izquierda"
+            >
+              <FiChevronLeft size={20} />
+            </button>
+
+            {/* Píldoras / Dots indicadores de los 10 partners */}
+            <div className="partners-3d-dots">
+              {alliance3DPartners.map((item, dotIdx) => {
+                const isActive = dotIdx === activeFrontIndex;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`partners-3d-dot ${isActive ? 'partners-3d-dot--active' : ''}`}
+                    onClick={() => rotateToPartner(dotIdx)}
+                    aria-label={`Ver partner ${item.name}`}
+                    title={item.name}
+                  >
+                    <span className="partners-3d-dot__bar" />
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Botón Pausa / Reproducción */}
+            <button
+              type="button"
+              className={`partners-3d-nav-btn partners-3d-nav-btn--play ${isPaused ? 'is-paused' : ''}`}
+              onClick={() => setIsPaused((prev) => !prev)}
+              aria-label={isPaused ? "Reanudar giro automático" : "Pausar giro"}
+              title={isPaused ? "Reanudar" : "Pausar"}
+            >
+              {isPaused ? <FiPlay size={16} /> : <FiPause size={16} />}
+            </button>
+
+            {/* Botón Girar Derecha */}
+            <button
+              type="button"
+              className="partners-3d-nav-btn"
+              onClick={handleNext}
+              aria-label="Girar carrusel a la derecha"
+              title="Girar a la derecha"
+            >
+              <FiChevronRight size={20} />
+            </button>
+          </div>
+
+          {/* Tarjeta de Resumen Rápido del Partner Activo al Frente */}
+          {activePartner && (
+            <div className="partners-3d-active-summary">
+              <div className="partners-3d-active-summary__content">
+                <span className="partners-3d-active-summary__label">Alianza Destacada en Foco:</span>
+                <strong className="partners-3d-active-summary__name">{activePartner.name}</strong>
+                <span className="partners-3d-active-summary__tier">• {activePartner.tier}</span>
+                <span className="partners-3d-active-summary__metric">({activePartner.metric})</span>
+              </div>
+              <button
+                type="button"
+                className="btn btn-primary partners-3d-active-summary__cta"
+                onClick={() => setSelectedPartner(activePartner)}
+              >
+                <span>Consultar Solución Oficial</span>
+                <FiArrowRight size={15} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Modal / Drawer de Detalle de Cliente o Partner (Clay Interactive Drawer) */}
-      {selectedClient && (
-        <div className="client-modal-backdrop" onClick={() => setSelectedClient(null)}>
-          <div className="client-modal-card" onClick={(e) => e.stopPropagation()}>
-            <button 
-              className="client-modal-close" 
-              onClick={() => setSelectedClient(null)}
-              aria-label="Cerrar modal"
+      {/* ========================================================
+          MODAL DE DETALLE DE ALIANZA TECNOLÓGICA (WHATSAPP DIRECTO)
+          ======================================================== */}
+      <AnimatePresence>
+        {selectedPartner && (
+          <motion.div 
+            className="client-modal-backdrop" 
+            onClick={() => setSelectedPartner(null)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="client-modal-card" 
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.92, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.92, y: 20 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
-              <FiX size={20} />
-            </button>
-
-            <div className="client-modal-header">
-              <span className="client-modal-tag" style={{ color: selectedClient.badgeColor, backgroundColor: `${selectedClient.badgeColor}15` }}>
-                {selectedClient.status}
-              </span>
-              <h3 className="client-modal-title">{selectedClient.name}</h3>
-              <span className="client-modal-category">{selectedClient.categoryLabel}</span>
-            </div>
-
-            <p className="client-modal-desc">
-              {selectedClient.oneLiner}
-            </p>
-
-            <div className="client-modal-deliverables">
-              <h4>Alcance Técnico & Entregables:</h4>
-              <ul>
-                {selectedClient.deliverables.map((del, i) => (
-                  <li key={i}>
-                    <FiCheckCircle className="client-modal-check" />
-                    <span>{del}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="client-modal-metric-box">
-              <span className="client-modal-metric-label">Métrica Destacada:</span>
-              <strong className="client-modal-metric-value">{selectedClient.metric}</strong>
-            </div>
-
-            <div className="client-modal-actions">
-              <a
-                href={`https://wa.me/51994520017?text=Hola%20Hackthony%2C%20deseo%20una%20propuesta%20similar%20a%20la%20de%20${encodeURIComponent(selectedClient.name)}.`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary client-modal-btn"
+              <button 
+                className="client-modal-close" 
+                onClick={() => setSelectedPartner(null)}
+                aria-label="Cerrar modal"
               >
-                <span>Cotizar Solución Similar</span>
-                <FiArrowRight size={16} />
-              </a>
-              {selectedClient.url.startsWith('http') && (
+                <FiX size={20} />
+              </button>
+
+              <div className="client-modal-header">
+                <span 
+                  className="client-modal-tag" 
+                  style={{ color: selectedPartner.accentColor, backgroundColor: `${selectedPartner.accentColor}18` }}
+                >
+                  {selectedPartner.status}
+                </span>
+                
+                <div style={{ marginTop: '14px', marginBottom: '8px' }}>
+                  {(() => {
+                    const Logo = selectedPartner.component;
+                    return <Logo height={42} />;
+                  })()}
+                </div>
+
+                <h3 className="client-modal-title">{selectedPartner.name}</h3>
+                <span className="client-modal-category">{selectedPartner.tier} • {selectedPartner.category}</span>
+              </div>
+
+              <p className="client-modal-desc">
+                {selectedPartner.oneLiner}
+              </p>
+
+              <div className="client-modal-deliverables">
+                <h4>Alcance Técnico & Entregables de la Alianza:</h4>
+                <ul>
+                  {selectedPartner.deliverables.map((del, i) => (
+                    <li key={i}>
+                      <FiCheckCircle className="client-modal-check" style={{ color: selectedPartner.accentColor }} />
+                      <span>{del}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="client-modal-metric-box">
+                <span className="client-modal-metric-label">Garantía / Métrica Oficial:</span>
+                <strong className="client-modal-metric-value" style={{ color: selectedPartner.accentColor }}>
+                  {selectedPartner.metric}
+                </strong>
+              </div>
+
+              <div className="client-modal-actions">
                 <a
-                  href={selectedClient.url}
+                  href={`https://wa.me/51994520017?text=Hola%20Hackthony%2C%20quisiera%20solicitar%20asesor%C3%ADa%20y%20cotizaci%C3%B3n%20sobre%20soluciones%20oficiales%20de%20${encodeURIComponent(selectedPartner.name)}.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-outline"
+                  className="btn btn-primary client-modal-btn"
                 >
-                  <FiExternalLink size={15} />
-                  <span>Sitio Oficial</span>
+                  <span>Consultar Solución con Ingeniero</span>
+                  <FiArrowRight size={16} />
                 </a>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+
+                {selectedPartner.url && (
+                  <a
+                    href={selectedPartner.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline"
+                  >
+                    <FiExternalLink size={15} />
+                    <span>Sitio Oficial</span>
+                  </a>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </section>
   );
