@@ -137,138 +137,85 @@
 }
 
 /* --------------------------------------------
-   BARRITA DE CLIENTES INTERACTIVA (STEERABLE MARQUEE)
+   BARRITA DE CLIENTES INTERACTIVA A ANCHO COMPLETO
    -------------------------------------------- */
+.client-marquee-fullwidth {
+  width: 100%;
+  margin-top: 56px;
+  position: relative;
+  overflow: hidden;
+}
+
 .client-marquee-steerable {
   position: relative;
   width: 100%;
-  max-width: 1180px;
-  margin: 0 auto 46px;
+  max-width: 100%;
+  margin: 0 auto;
   overflow: hidden;
-  padding: 12px 0;
+  padding: 16px 0;
   user-select: none;
   cursor: grab;
-  /* Degradado suave en los bordes laterales */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  /* Degradado suave en los bordes laterales (de un lado a otro) */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 }
 
 .client-marquee-steerable--left {
-  cursor: w-resize;
+  cursor: w-resize !important;
 }
 
 .client-marquee-steerable--right {
-  cursor: e-resize;
+  cursor: e-resize !important;
 }
 
 .client-marquee-steerable--pause {
-  cursor: default;
+  cursor: default !important;
 }
 
 .client-marquee-steerable__track {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 22px;
   width: max-content;
   will-change: transform;
 }
 
-/* Píldora individual de cliente inspirada en la imagen de referencia */
+/* Píldora que contiene únicamente la imagen del cliente */
 .client-marquee-pill {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  padding: 7px 18px 7px 12px;
+  justify-content: center;
+  height: 64px;
+  min-width: 155px;
+  padding: 10px 24px;
   background: #FFFFFF;
-  border: 1px solid rgba(15, 23, 42, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 9999px;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
   cursor: pointer;
   flex-shrink: 0;
 }
 
 .client-marquee-pill:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.02);
   border-color: rgba(37, 99, 235, 0.35);
-  box-shadow: 0 8px 24px -4px rgba(37, 99, 235, 0.12),
+  box-shadow: 0 10px 25px -4px rgba(37, 99, 235, 0.12),
               0 2px 8px rgba(15, 23, 42, 0.06);
 }
 
-.client-marquee-pill__logo-wrap {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #F8FAFC;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  flex-shrink: 0;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-}
-
 .client-marquee-pill__logo {
-  max-width: 24px;
-  max-height: 24px;
+  max-height: 40px;
+  max-width: 125px;
+  width: auto;
+  height: auto;
   object-fit: contain;
+  transition: transform 0.25s ease;
   filter: contrast(1.05);
 }
 
-.client-marquee-pill__name {
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: #0F172A;
-  letter-spacing: -0.01em;
-}
-
-.client-marquee-pill__tag {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.74rem;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 9999px;
-  letter-spacing: 0.01em;
-  transition: all 0.2s ease;
-}
-
-/* Variantes de color estilo píldora como en la captura */
-.client-pill__tag--blue {
-  background: #EFF6FF;
-  color: #2563EB;
-  border: 1px solid #BFDBFE;
-}
-
-.client-pill__tag--purple {
-  background: #FAF5FF;
-  color: #7E22CE;
-  border: 1px solid #E9D5FF;
-}
-
-.client-pill__tag--cyan {
-  background: #ECFEFF;
-  color: #0891B2;
-  border: 1px solid #A5F3FC;
-}
-
-.client-pill__tag--amber {
-  background: #FFFBEB;
-  color: #B45309;
-  border: 1px solid #FDE68A;
-}
-
-.client-pill__tag--indigo {
-  background: #EEF2FF;
-  color: #4F46E5;
-  border: 1px solid #C7D2FE;
-}
-
-.client-pill__tag--rose {
-  background: #FFF1F2;
-  color: #E11D48;
-  border: 1px solid #FECDD3;
+.client-marquee-pill:hover .client-marquee-pill__logo {
+  transform: scale(1.05);
 }
 
 /* Indicador Flotante Direccional que sigue al puntero */
@@ -310,6 +257,21 @@
 }
 
 @media (max-width: 768px) {
+  .client-marquee-fullwidth {
+    margin-top: 40px;
+  }
+
+  .client-marquee-pill {
+    height: 54px;
+    min-width: 130px;
+    padding: 8px 18px;
+  }
+
+  .client-marquee-pill__logo {
+    max-height: 32px;
+    max-width: 100px;
+  }
+
   .client-marquee-cursor {
     display: none !important;
   }

@@ -22,68 +22,60 @@ import logoHikvision from '../../img/camera-mexico.png';
 
 import './Testimonials.css';
 
-// Lista de clientes con sus logos oficiales y tags tipo píldora
+// Lista de clientes con sus logos oficiales
 const marqueeClients = [
   {
     id: 'ingelectros',
     name: 'Ingelectros Perú',
     logo: logoIngelectros,
-    tag: 'Ingeniería Electromecánica',
-    tagClass: 'client-pill__tag--blue',
     testimonialIndex: 5, // Dr. Martín Solís
   },
   {
     id: 'md-boutique',
     name: 'MD Boutique',
     logo: logoMDBoutique,
-    tag: 'Retail & Moda Exclusiva',
-    tagClass: 'client-pill__tag--purple',
     testimonialIndex: 1, // Rosangelica Ayllon
   },
   {
     id: 'sasa-it',
     name: 'SASA-IT Service',
     logo: logoSasaIT,
-    tag: 'Servicios TI & Cloud',
-    tagClass: 'client-pill__tag--cyan',
     testimonialIndex: 3, // Raquel García
   },
   {
     id: 'unac',
     name: 'Universidad Nacional del Callao',
     logo: logoUNAC,
-    tag: 'Educación Superior',
-    tagClass: 'client-pill__tag--blue',
     testimonialIndex: 4, // Dr. Jason Olivos
   },
   {
     id: 'vicor',
     name: 'Vicor Ingenieros',
     logo: logoVicor,
-    tag: 'Minería & Operaciones',
-    tagClass: 'client-pill__tag--amber',
     testimonialIndex: 0, // Wilmer Vivar
   },
   {
     id: 'comfica',
     name: 'Comfica',
     logo: logoComfica,
-    tag: 'Telecomunicaciones',
-    tagClass: 'client-pill__tag--indigo',
     testimonialIndex: 2, // Carolina Rivera
   },
   {
     id: 'hikvision',
     name: 'Hikvision Stores',
     logo: logoHikvision,
-    tag: 'Seguridad Electrónica',
-    tagClass: 'client-pill__tag--rose',
     testimonialIndex: 4, // Dr. Jason Olivos
   },
 ];
 
-// Triplicar para bucle continuo infinito
-const tripleClients = [...marqueeClients, ...marqueeClients, ...marqueeClients];
+// 5 repeticiones para un desplazamiento continuo infinito de un lado a otro de la pantalla
+const repeatedClients = [
+  ...marqueeClients,
+  ...marqueeClients,
+  ...marqueeClients,
+  ...marqueeClients,
+  ...marqueeClients,
+];
 
 function ClientMarqueeSteerable({ onSelectIndex }) {
   const containerRef = useRef(null);
@@ -97,8 +89,8 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
 
   const stateRef = useRef({
     offset: 0,
-    currentSpeed: 0.8,
-    targetSpeed: 0.8,
+    currentSpeed: 0.85,
+    targetSpeed: 0.85,
     singleSetWidth: 0,
     rafId: null,
   });
@@ -109,7 +101,7 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
 
     const measureWidth = () => {
       if (track) {
-        stateRef.current.singleSetWidth = track.scrollWidth / 3;
+        stateRef.current.singleSetWidth = track.scrollWidth / 5;
       }
     };
 
@@ -118,7 +110,7 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
 
     const animate = () => {
       const state = stateRef.current;
-      // Damped spring interpolation hacia targetSpeed
+      // Interpolación elástica suave hacia targetSpeed
       state.currentSpeed += (state.targetSpeed - state.currentSpeed) * 0.08;
       state.offset += state.currentSpeed;
 
@@ -153,28 +145,28 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
 
     const state = stateRef.current;
 
-    // Zona Central Muerta (42% a 58%): SE PAUSA
-    if (ratio >= 0.42 && ratio <= 0.58) {
+    // Zona Central (38% a 62%): SE PAUSA
+    if (ratio >= 0.38 && ratio <= 0.62) {
       state.targetSpeed = 0;
       setCursorInfo({ visible: true, direction: 'pause', x, y });
     }
-    // Zona Derecha (> 58%): Carrusel avanza hacia la derecha (offset disminuye)
-    else if (ratio > 0.58) {
-      const intensity = (ratio - 0.58) / 0.42; // 0 a 1
-      state.targetSpeed = -intensity * 3.6; // Desplaza carrusel a la derecha
+    // Zona Derecha (> 62%): Carrusel avanza hacia la derecha
+    else if (ratio > 0.62) {
+      const intensity = (ratio - 0.62) / 0.38; // 0 a 1
+      state.targetSpeed = -intensity * 4.2; // Desplaza carrusel a la derecha
       setCursorInfo({ visible: true, direction: 'right', x, y });
     }
-    // Zona Izquierda (< 42%): Carrusel avanza hacia la izquierda (offset aumenta)
+    // Zona Izquierda (< 38%): Carrusel avanza hacia la izquierda
     else {
-      const intensity = (0.42 - ratio) / 0.42; // 0 a 1
-      state.targetSpeed = intensity * 3.6; // Desplaza carrusel a la izquierda
+      const intensity = (0.38 - ratio) / 0.38; // 0 a 1
+      state.targetSpeed = intensity * 4.2; // Desplaza carrusel a la izquierda
       setCursorInfo({ visible: true, direction: 'left', x, y });
     }
   };
 
   const handleMouseLeave = () => {
     const state = stateRef.current;
-    state.targetSpeed = 0.8; // Reanuda avance suave por defecto
+    state.targetSpeed = 0.85; // Reanuda avance suave continuo por defecto
     setCursorInfo({ visible: false, direction: 'none', x: 0, y: 0 });
   };
 
@@ -192,30 +184,26 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
       <div className="client-marquee-steerable__fade client-marquee-steerable__fade--left" />
       <div className="client-marquee-steerable__fade client-marquee-steerable__fade--right" />
 
-      {/* Pista continua infinita */}
+      {/* Pista continua infinita: solo imágenes de los clientes */}
       <div className="client-marquee-steerable__track" ref={trackRef}>
-        {tripleClients.map((item, idx) => (
+        {repeatedClients.map((item, idx) => (
           <div
             key={`${item.id}-${idx}`}
             className="client-marquee-pill"
             onClick={() => onSelectIndex(item.testimonialIndex)}
+            title={item.name}
           >
-            <div className="client-marquee-pill__logo-wrap">
-              <img
-                src={item.logo}
-                alt={item.name}
-                className="client-marquee-pill__logo"
-              />
-            </div>
-            <span className="client-marquee-pill__name">{item.name}</span>
-            <span className={`client-marquee-pill__tag ${item.tagClass}`}>
-              {item.tag}
-            </span>
+            <img
+              src={item.logo}
+              alt={item.name}
+              className="client-marquee-pill__logo"
+              loading="lazy"
+            />
           </div>
         ))}
       </div>
 
-      {/* Cursor Flotante Direccional que sigue al mouse */}
+      {/* Cursor Flotante Direccional que sigue al puntero del mouse */}
       {cursorInfo.visible && (
         <div
           className={`client-marquee-cursor client-marquee-cursor--${cursorInfo.direction}`}
@@ -225,14 +213,14 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
         >
           {cursorInfo.direction === 'right' && (
             <>
-              <span>Desplazar</span>
+              <span>Derecha</span>
               <FiArrowRight size={15} />
             </>
           )}
           {cursorInfo.direction === 'left' && (
             <>
               <FiArrowLeft size={15} />
-              <span>Desplazar</span>
+              <span>Izquierda</span>
             </>
           )}
           {cursorInfo.direction === 'pause' && (
@@ -338,17 +326,6 @@ export default function Testimonials() {
               <span className="testimonials-modern__metric-label">Tasa de Fidelidad</span>
             </div>
           </div>
-        </motion.div>
-
-        {/* Barrita Interactiva de Clientes con Control Direccional por Mouse */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
-          transition={{ duration: 0.65, delay: 0.1 }}
-          style={{ marginBottom: '44px' }}
-        >
-          <ClientMarqueeSteerable onSelectIndex={goTo} />
         </motion.div>
 
         {/* Tarjeta Destacada con Animación Fluida */}
@@ -499,8 +476,18 @@ export default function Testimonials() {
             );
           })}
         </div>
-
       </div>
+
+      {/* Barrita Interactiva de Logos de Clientes (Ocupa de un lado a otro abajo de los comentarios) */}
+      <motion.div
+        className="client-marquee-fullwidth"
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <ClientMarqueeSteerable onSelectIndex={goTo} />
+      </motion.div>
     </section>
   );
 }
