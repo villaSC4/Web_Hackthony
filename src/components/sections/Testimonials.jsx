@@ -171,19 +171,19 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
       <div className="client-marquee-steerable__fade client-marquee-steerable__fade--left" />
       <div className="client-marquee-steerable__fade client-marquee-steerable__fade--right" />
 
-      {/* Pista continua infinita: solo las 5 imágenes sin cuadros */}
+      {/* Pista continua infinita: los 5 clientes en cuadros grandes y vistosos */}
       <div className="client-marquee-steerable__track" ref={trackRef}>
         {repeatedClients.map((item, idx) => (
           <div
             key={`${item.id}-${idx}`}
-            className="client-marquee-item"
+            className="client-marquee-card"
             onClick={() => onSelectIndex(item.testimonialIndex)}
             title={item.name}
           >
             <img
               src={item.logo}
               alt={item.name}
-              className="client-marquee-item__logo"
+              className="client-marquee-card__img"
               loading="lazy"
             />
           </div>
