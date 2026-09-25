@@ -1,6 +1,6 @@
 /* ============================================
-   CLIENTES CORPORATIVOS — PALETA MODERNA & ALTO IMPACTO
-   Fondo claro #FAFAFC, acento azul #2563EB, logos nítidos y animaciones fluidas
+   TESTIMONIALS SECTION — PALETA MODERNA CLARA & ACENTO AZUL
+   Con los 5 Logos Oficiales Integrados de Manera Natural + Testimonios Reales
    ============================================ */
 
 .testimonials-modern {
@@ -10,7 +10,7 @@
   background-color: #FAFAFC;
 }
 
-/* Luces ambientales tenues de fondo */
+/* Luces ambientales suaves de fondo */
 .testimonials-modern__ambient-glow {
   position: absolute;
   width: 550px;
@@ -18,20 +18,20 @@
   border-radius: 50%;
   filter: blur(150px);
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.2;
   z-index: 0;
 }
 
 .testimonials-modern__ambient-glow--left {
   top: 10%;
   left: -150px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.28) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.3) 0%, transparent 70%);
 }
 
 .testimonials-modern__ambient-glow--right {
   bottom: 10%;
   right: -150px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.22) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, transparent 70%);
 }
 
 /* --------------------------------------------
@@ -41,8 +41,8 @@
   position: relative;
   z-index: 1;
   text-align: center;
-  max-width: 840px;
-  margin: 0 auto 52px;
+  max-width: 820px;
+  margin: 0 auto 40px;
 }
 
 .testimonials-modern__badge {
@@ -90,7 +90,7 @@
   color: #475569;
   font-weight: 400;
   margin: 0 auto 28px;
-  max-width: 720px;
+  max-width: 700px;
 }
 
 /* Micro-métricas de confianza en la cabecera */
@@ -113,14 +113,19 @@
 
 .testimonials-modern__metric-number {
   font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: #0F172A;
 }
 
+.testimonials-modern__stars-static {
+  display: flex;
+  gap: 2px;
+}
+
 .testimonials-modern__metric-label {
   font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: #64748B;
 }
@@ -132,255 +137,214 @@
 }
 
 /* --------------------------------------------
-   SPOTLIGHT CARD (TARJETA DESTACADA)
+   BARRA HORIZONTAL NATURAL DE LOGOS (5 CLIENTES)
+   Idéntica a la disposición de la imagen de referencia
+   -------------------------------------------- */
+.testimonials-modern__logos-bar {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto 36px;
+  padding: 12px 20px;
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  overflow-x: auto;
+}
+
+.testimonials-modern__logo-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 130px;
+  transition: all 0.25s ease;
+}
+
+.testimonials-modern__logo-btn:hover {
+  background: #F8FAFC;
+}
+
+.testimonials-modern__logo-btn-img-wrap {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.testimonials-modern__logo-btn-img {
+  max-height: 42px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.75;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.testimonials-modern__logo-btn:hover .testimonials-modern__logo-btn-img,
+.testimonials-modern__logo-btn--active .testimonials-modern__logo-btn-img {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.testimonials-modern__logo-btn-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 3px;
+  border-radius: 9999px;
+  background: #2563EB;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.5);
+}
+
+/* --------------------------------------------
+   TARJETA DESTACADA (FEATURED CARD)
    -------------------------------------------- */
 .testimonials-modern__showcase {
   position: relative;
   z-index: 1;
-  max-width: 980px;
+  max-width: 880px;
   margin: 0 auto 52px;
 }
 
-.testimonials-modern__spotlight-card {
+.testimonials-modern__featured-card {
   position: relative;
   background: #FFFFFF;
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 28px;
-  padding: 44px 48px;
-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+  padding: 44px 50px;
+  box-shadow: 0 16px 45px rgba(15, 23, 42, 0.05);
   overflow: hidden;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.testimonials-modern__spotlight-card:hover {
+.testimonials-modern__featured-card:hover {
   border-color: rgba(37, 99, 235, 0.35);
   box-shadow: 0 24px 60px -10px rgba(37, 99, 235, 0.12),
               0 0 0 1px rgba(37, 99, 235, 0.15);
 }
 
-.testimonials-modern__spotlight-grid {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 44px;
-  align-items: center;
-}
-
-/* Lado Izquierdo: Escaparate del Logo */
-.testimonials-modern__logo-stage {
+.testimonials-modern__card-top-row {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 18px;
+  justify-content: space-between;
+  margin-bottom: 24px;
 }
 
-.testimonials-modern__logo-box {
-  width: 100%;
-  height: 220px;
-  background: #F8FAFC;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  border-radius: 20px;
-  padding: 24px 32px;
+.testimonials-modern__quote-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563EB;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 2px 8px rgba(15, 23, 42, 0.02);
-  transition: transform 0.3s ease;
 }
 
-.testimonials-modern__spotlight-card:hover .testimonials-modern__logo-box {
-  transform: translateY(-2px);
+/* Logo oficial del cliente dentro de la tarjeta */
+.testimonials-modern__card-brand-badge {
+  max-width: 160px;
+  height: 46px;
+  padding: 6px 16px;
+  background: #F8FAFC;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
 }
 
-.testimonials-modern__logo-img {
+.testimonials-modern__card-brand-img {
+  max-height: 36px;
   max-width: 100%;
-  max-height: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 4px 12px rgba(15, 23, 42, 0.05));
 }
 
-.testimonials-modern__status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  color: #059669;
+.testimonials-modern__quote-text {
   font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: clamp(1.15rem, 1.6vw, 1.32rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.7;
+  color: #1E293B;
+  margin: 0 0 32px;
 }
 
-.testimonials-modern__status-dot {
-  width: 7px;
-  height: 7px;
+.testimonials-modern__author-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.testimonials-modern__author-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.testimonials-modern__avatar {
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: #10B981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
-  animation: pulseStatus 2s infinite ease-in-out;
-}
-
-@keyframes pulseStatus {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0.6;
-  }
-}
-
-/* Lado Derecho: Información & Alcance Técnico */
-.testimonials-modern__info-stage {
-  display: flex;
-  flex-direction: column;
-}
-
-.testimonials-modern__meta-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-.testimonials-modern__sector-badge {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #2563EB;
-  background: rgba(37, 99, 235, 0.08);
-  border: 1px solid rgba(37, 99, 235, 0.16);
-  padding: 4px 12px;
-  border-radius: 9999px;
-}
-
-.testimonials-modern__location-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #64748B;
-  background: #F1F5F9;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  padding: 4px 12px;
-  border-radius: 9999px;
-}
-
-.testimonials-modern__client-name {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: #FFFFFF;
   font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-size: 1rem;
   font-weight: 800;
-  color: #0F172A;
-  line-height: 1.25;
-  margin: 0 0 14px;
-}
-
-.testimonials-modern__highlight-box {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 18px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.06) 0%, rgba(14, 165, 233, 0.06) 100%);
-  border: 1px solid rgba(37, 99, 235, 0.15);
-  color: #0F172A;
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.92rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.testimonials-modern__highlight-icon {
-  color: #2563EB;
-  flex-shrink: 0;
-}
-
-.testimonials-modern__deliverables-block {
-  margin-bottom: 22px;
-}
-
-.testimonials-modern__deliverables-title {
-  display: block;
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #64748B;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 10px;
-}
-
-.testimonials-modern__deliverables-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.testimonials-modern__deliverable-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.88rem;
-  color: #334155;
-  line-height: 1.45;
-}
-
-.testimonials-modern__check-badge {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: rgba(37, 99, 235, 0.1);
-  color: #2563EB;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
 }
 
-.testimonials-modern__stage-footer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(15, 23, 42, 0.06);
-  flex-wrap: wrap;
-}
-
-.testimonials-modern__tag-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.78rem;
-  font-weight: 700;
+.testimonials-modern__author-name {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 1.15rem;
+  font-weight: 800;
   color: #0F172A;
-  background: #F8FAFC;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  padding: 5px 12px;
-  border-radius: 9999px;
+  line-height: 1.2;
+  margin: 0 0 4px;
 }
 
-.testimonials-modern__tag-pill svg {
+.testimonials-modern__author-role {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  color: #64748B;
+  margin: 0;
+}
+
+.testimonials-modern__author-role span {
+  font-weight: 600;
   color: #2563EB;
 }
 
-.testimonials-modern__verified-pill {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.76rem;
-  font-weight: 600;
-  color: #059669;
+.testimonials-modern__stars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* --------------------------------------------
@@ -444,231 +408,127 @@
 }
 
 /* --------------------------------------------
-   MARQUEE CONTINUO DE LOGOS DE CLIENTES
-   -------------------------------------------- */
-.testimonials-modern__marquee-wrap {
-  position: relative;
-  overflow: hidden;
-  margin: 36px 0 52px;
-  padding: 14px 0;
-  border-top: 1px solid rgba(15, 23, 42, 0.06);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-  background: #FFFFFF;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.02);
-}
-
-.testimonials-modern__marquee-fade {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 120px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.testimonials-modern__marquee-fade--left {
-  left: 0;
-  background: linear-gradient(to right, #FFFFFF, transparent);
-}
-
-.testimonials-modern__marquee-fade--right {
-  right: 0;
-  background: linear-gradient(to left, #FFFFFF, transparent);
-}
-
-.testimonials-modern__marquee-track {
-  display: flex;
-  gap: 20px;
-  width: max-content;
-  animation: clientMarquee 32s linear infinite;
-}
-
-.testimonials-modern__marquee-wrap:hover .testimonials-modern__marquee-track {
-  animation-play-state: paused;
-}
-
-@keyframes clientMarquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.testimonials-modern__marquee-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 18px;
-  background: #F8FAFC;
-  border: 1px solid rgba(15, 23, 42, 0.07);
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  white-space: nowrap;
-}
-
-.testimonials-modern__marquee-pill:hover {
-  background: #FFFFFF;
-  border-color: rgba(37, 99, 235, 0.4);
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
-  transform: translateY(-2px);
-}
-
-.testimonials-modern__marquee-logo {
-  height: 26px;
-  width: auto;
-  max-width: 90px;
-  object-fit: contain;
-}
-
-.testimonials-modern__marquee-name {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #1E293B;
-}
-
-/* --------------------------------------------
-   GRID DE TODOS LOS CLIENTES (CARDS)
+   GRID DE TODOS LOS TESTIMONIOS (MINI-CARDS)
    -------------------------------------------- */
 .testimonials-modern__grid {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
 }
 
-.testimonials-modern__client-card {
+.testimonials-modern__mini-card {
   background: #FFFFFF;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 22px;
-  padding: 24px 24px 20px;
+  border-radius: 20px;
+  padding: 22px 20px;
   box-shadow: 0 6px 20px rgba(15, 23, 42, 0.03);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 250px;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  min-height: 220px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
   will-change: transform;
 }
 
-.testimonials-modern__client-card:hover {
+.testimonials-modern__mini-card:hover {
   border-color: rgba(37, 99, 235, 0.35);
-  box-shadow: 0 16px 36px -6px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 14px 34px -6px rgba(37, 99, 235, 0.12);
 }
 
-.testimonials-modern__client-card--active {
+.testimonials-modern__mini-card--active {
   border-color: #2563EB !important;
-  box-shadow: 0 16px 38px -6px rgba(37, 99, 235, 0.18),
+  box-shadow: 0 14px 36px -6px rgba(37, 99, 235, 0.18),
               0 0 0 1px rgba(37, 99, 235, 0.25) !important;
 }
 
-.testimonials-modern__card-logo-wrap {
-  width: 100%;
-  height: 90px;
-  background: #F8FAFC;
-  border: 1px solid rgba(15, 23, 42, 0.05);
-  border-radius: 14px;
-  padding: 12px 18px;
+.testimonials-modern__mini-top-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  transition: background-color 0.25s ease;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
-.testimonials-modern__client-card:hover .testimonials-modern__card-logo-wrap {
-  background: #F1F5F9;
+.testimonials-modern__mini-logo-wrap {
+  max-width: 110px;
+  height: 32px;
+  display: flex;
+  align-items: center;
 }
 
-.testimonials-modern__card-logo {
+.testimonials-modern__mini-logo {
+  max-height: 30px;
   max-width: 100%;
-  max-height: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
 }
 
-.testimonials-modern__card-body {
+.testimonials-modern__mini-stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.testimonials-modern__mini-text {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #475569;
+  font-style: italic;
+  margin: 0 0 16px;
   flex-grow: 1;
+}
+
+.testimonials-modern__mini-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.testimonials-modern__mini-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: #FFFFFF;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.testimonials-modern__mini-info {
   display: flex;
   flex-direction: column;
 }
 
-.testimonials-modern__card-header-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
+.testimonials-modern__mini-name {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.2;
 }
 
-.testimonials-modern__card-flag {
-  font-size: 0.95rem;
-}
-
-.testimonials-modern__card-sector {
+.testimonials-modern__mini-company {
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.74rem;
-  font-weight: 700;
   color: #2563EB;
-}
-
-.testimonials-modern__card-name {
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: #0F172A;
-  line-height: 1.25;
-  margin: 0 0 8px;
-}
-
-.testimonials-modern__card-highlight {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: #475569;
-  margin: 0 0 16px;
-}
-
-.testimonials-modern__card-action {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 14px;
-  border-top: 1px solid rgba(15, 23, 42, 0.06);
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #64748B;
-  transition: color 0.25s ease;
-}
-
-.testimonials-modern__client-card:hover .testimonials-modern__card-action {
-  color: #2563EB;
-}
-
-.testimonials-modern__client-card--active .testimonials-modern__card-action {
-  color: #2563EB;
+  font-weight: 600;
 }
 
 /* --------------------------------------------
    RESPONSIVE DESIGN
    -------------------------------------------- */
-@media (max-width: 1024px) {
-  .testimonials-modern__spotlight-grid {
-    grid-template-columns: 300px 1fr;
-    gap: 32px;
-  }
-
-  .testimonials-modern__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 768px) {
   .testimonials-modern {
     padding: 70px 0 80px;
@@ -676,30 +536,26 @@
 
   .testimonials-modern__metrics {
     flex-direction: column;
-    gap: 12px;
-    border-radius: 20px;
-    padding: 16px 20px;
+    gap: 10px;
+    border-radius: 18px;
+    padding: 14px 20px;
   }
 
   .testimonials-modern__metric-sep {
     display: none;
   }
 
-  .testimonials-modern__spotlight-card {
-    padding: 28px 20px;
-    border-radius: 22px;
+  .testimonials-modern__logos-bar {
+    justify-content: flex-start;
   }
 
-  .testimonials-modern__spotlight-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .testimonials-modern__featured-card {
+    padding: 30px 22px;
   }
 
-  .testimonials-modern__logo-box {
-    height: 160px;
-  }
-
-  .testimonials-modern__grid {
-    grid-template-columns: 1fr;
+  .testimonials-modern__author-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
   }
 }
