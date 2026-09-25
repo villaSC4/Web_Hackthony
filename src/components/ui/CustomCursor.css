@@ -149,12 +149,33 @@
   }
 }
 
-/* Ocultar el círculo y punto del cursor al interactuar con el carrusel de clientes */
+/* Ocultar el círculo y punto del cursor al interactuar con el carrusel de clientes y partners 3D */
 body:has(.client-marquee-fullwidth:hover) .custom-cursor,
 body:has(.client-marquee-fullwidth:hover) .custom-cursor-dot,
 body:has(.client-marquee-steerable:hover) .custom-cursor,
-body:has(.client-marquee-steerable:hover) .custom-cursor-dot {
+body:has(.client-marquee-steerable:hover) .custom-cursor-dot,
+body:has(.partners-3d-stage:hover) .custom-cursor,
+body:has(.partners-3d-stage:hover) .custom-cursor-dot,
+body:has(.partners-3d-section:hover) .custom-cursor,
+body:has(.partners-3d-section:hover) .custom-cursor-dot {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
+}
+
+html.has-custom-cursor .partners-3d-stage,
+html.has-custom-cursor .partners-3d-stage * {
+  cursor: grab;
+}
+
+html.has-custom-cursor .partners-3d-stage:active,
+html.has-custom-cursor .partners-3d-stage:active * {
+  cursor: grabbing;
+}
+
+html.has-custom-cursor .partners-3d-card__btn,
+html.has-custom-cursor .partners-3d-card--front,
+html.has-custom-cursor .partners-3d-nav-btn,
+html.has-custom-cursor .partners-3d-dot {
+  cursor: pointer !important;
 }

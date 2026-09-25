@@ -40,8 +40,15 @@ export default function CustomCursor() {
 
       const target = e.target;
 
-      // Hide custom cursor circle over the steerable client marquee
-      if (target && target.closest && (target.closest('.client-marquee-steerable') || target.closest('.client-marquee-fullwidth'))) {
+      // Hide custom cursor circle over the steerable client marquee and 3D partners carousel
+      if (
+        target &&
+        target.closest &&
+        (target.closest('.client-marquee-steerable') ||
+          target.closest('.client-marquee-fullwidth') ||
+          target.closest('.partners-3d-stage') ||
+          target.closest('.partners-3d-section'))
+      ) {
         setIsVisible(false);
         return;
       }

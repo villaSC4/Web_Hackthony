@@ -22,13 +22,9 @@ import {
   LogoAzure, 
   LogoBarracuda, 
   LogoFortinet, 
-  LogoCisco,
-  partnersData 
+  LogoCisco
 } from '../ui/PartnerLogos';
 import './Partners.css';
-
-// Marquee continuo superior
-const marqueePartners = [...partnersData, ...partnersData];
 
 // Las 10 Alianzas Tecnológicas Oficiales de Big Tech & Ciberseguridad para el carrusel 360°
 const alliance3DPartners = [
@@ -168,7 +164,7 @@ export default function Partners() {
   const [rotation, setRotation] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState(null);
-  const [radii, setRadii] = useState({ rx: 460, rz: 360 });
+  const [radii, setRadii] = useState({ rx: 570, rz: 430 });
 
   const stageRef = useRef(null);
   const isDraggingRef = useRef(false);
@@ -183,18 +179,18 @@ export default function Partners() {
   const total = alliance3DPartners.length;
   const angleStep = 360 / total;
 
-  // Ajuste de radios de la órbita según el tamaño de pantalla
+  // Ajuste de radios de la órbita según el tamaño de pantalla (más amplio y vistoso)
   useEffect(() => {
     const updateRadii = () => {
       const w = window.innerWidth;
-      if (w > 1200) {
-        setRadii({ rx: 460, rz: 350 });
-      } else if (w > 900) {
-        setRadii({ rx: 370, rz: 280 });
-      } else if (w > 640) {
-        setRadii({ rx: 280, rz: 210 });
+      if (w > 1280) {
+        setRadii({ rx: 570, rz: 430 });
+      } else if (w > 992) {
+        setRadii({ rx: 470, rz: 360 });
+      } else if (w > 680) {
+        setRadii({ rx: 350, rz: 260 });
       } else {
-        setRadii({ rx: 175, rz: 140 });
+        setRadii({ rx: 220, rz: 165 });
       }
     };
 
@@ -333,24 +329,6 @@ export default function Partners() {
         </motion.div>
       </div>
 
-      {/* Marquee Ticker continuo superior */}
-      <div className="partners__marquee-wrap">
-        <div className="partners__fade partners__fade--left" />
-        <div className="partners__fade partners__fade--right" />
-        <div className="partners__marquee">
-          <div className="partners__track">
-            {marqueePartners.map((partner, i) => {
-              const LogoComp = partner.component;
-              return (
-                <div key={`${partner.id}-${i}`} className="partner-marquee-pill">
-                  <LogoComp height={26} className="partner-marquee-svg" />
-                  <span className="partner-marquee-tier">{partner.tier}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
 
       {/* ========================================================
           ESCENARIO 3D CILÍNDRICO 360° (SE VE DE FONDO COMO GIRA Y VUELVE)
@@ -390,11 +368,11 @@ export default function Partners() {
               // Normalización de profundidad (0 = fondo lejano, 1 = frente absoluto)
               const depthNorm = (z + radii.rz) / (2 * radii.rz);
 
-              // Escala: 0.65 en el fondo -> 1.04 al frente
-              const scale = 0.65 + depthNorm * 0.39;
+              // Escala: 0.70 en el fondo -> 1.08 al frente (más grande y destacado)
+              const scale = 0.70 + depthNorm * 0.38;
 
-              // Opacidad: 0.40 en el fondo (visible en el fondo como gira) -> 1.0 al frente
-              const opacity = 0.42 + depthNorm * 0.58;
+              // Opacidad: 0.46 en el fondo (visible en el fondo como gira) -> 1.0 al frente
+              const opacity = 0.46 + depthNorm * 0.54;
 
               // Inclinación 3D en el eje Y siguiendo la curvatura del cilindro
               const rotateY = -sin * 26;
@@ -439,7 +417,7 @@ export default function Partners() {
 
                   {/* Logo Oficial Amplio y Nombre de la Marca */}
                   <div className="partners-3d-card__logo-wrap">
-                    <LogoComp height={46} className="partners-3d-card__svg" />
+                    <LogoComp height={50} className="partners-3d-card__svg" />
                     <h3 className="partners-3d-card__name">{item.name}</h3>
                     <span className="partners-3d-card__tier">{item.tier}</span>
                   </div>
