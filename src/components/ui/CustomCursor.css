@@ -148,3 +148,11 @@
     display: none !important;
   }
 }
+
+/* Ocultar el círculo y punto del cursor al interactuar con el carrusel de clientes */
+body:has(.client-marquee-steerable:hover) .custom-cursor,
+body:has(.client-marquee-steerable:hover) .custom-cursor-dot {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

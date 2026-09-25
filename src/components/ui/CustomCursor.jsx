@@ -38,9 +38,16 @@ export default function CustomCursor() {
         rafId = requestAnimationFrame(render);
       }
 
+      const target = e.target;
+
+      // Hide custom cursor circle over the steerable client marquee
+      if (target && target.closest && (target.closest('.client-marquee-steerable') || target.closest('.client-marquee-fullwidth'))) {
+        setIsVisible(false);
+        return;
+      }
+
       setIsVisible(true);
 
-      const target = e.target;
       const clickable = target.closest(
         'a, button, input, select, textarea, [role="button"], .directory-row, .service-card, .product-card'
       );

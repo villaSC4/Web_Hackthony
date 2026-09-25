@@ -17,12 +17,10 @@ import logoMDBoutique from '../../img/4-1.png';
 import logoSasaIT from '../../img/5.png';
 import logoUNAC from '../../img/Nuevo-Cliente4.png';
 import logoVicor from '../../img/Nuevo-Cliente5.png';
-import logoComfica from '../../img/confica-colombia.png';
-import logoHikvision from '../../img/camera-mexico.png';
 
 import './Testimonials.css';
 
-// Lista de clientes con sus logos oficiales
+// Lista exclusiva de los 5 clientes solicitados
 const marqueeClients = [
   {
     id: 'ingelectros',
@@ -54,22 +52,11 @@ const marqueeClients = [
     logo: logoVicor,
     testimonialIndex: 0, // Wilmer Vivar
   },
-  {
-    id: 'comfica',
-    name: 'Comfica',
-    logo: logoComfica,
-    testimonialIndex: 2, // Carolina Rivera
-  },
-  {
-    id: 'hikvision',
-    name: 'Hikvision Stores',
-    logo: logoHikvision,
-    testimonialIndex: 4, // Dr. Jason Olivos
-  },
 ];
 
-// 5 repeticiones para un desplazamiento continuo infinito de un lado a otro de la pantalla
+// 6 repeticiones para un desplazamiento infinito continuo y uniforme de un lado a otro
 const repeatedClients = [
+  ...marqueeClients,
   ...marqueeClients,
   ...marqueeClients,
   ...marqueeClients,
@@ -101,7 +88,7 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
 
     const measureWidth = () => {
       if (track) {
-        stateRef.current.singleSetWidth = track.scrollWidth / 5;
+        stateRef.current.singleSetWidth = track.scrollWidth / 6;
       }
     };
 
@@ -184,19 +171,19 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
       <div className="client-marquee-steerable__fade client-marquee-steerable__fade--left" />
       <div className="client-marquee-steerable__fade client-marquee-steerable__fade--right" />
 
-      {/* Pista continua infinita: solo imágenes de los clientes */}
+      {/* Pista continua infinita: solo las 5 imágenes sin cuadros */}
       <div className="client-marquee-steerable__track" ref={trackRef}>
         {repeatedClients.map((item, idx) => (
           <div
             key={`${item.id}-${idx}`}
-            className="client-marquee-pill"
+            className="client-marquee-item"
             onClick={() => onSelectIndex(item.testimonialIndex)}
             title={item.name}
           >
             <img
               src={item.logo}
               alt={item.name}
-              className="client-marquee-pill__logo"
+              className="client-marquee-item__logo"
               loading="lazy"
             />
           </div>
