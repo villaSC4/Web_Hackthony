@@ -5,15 +5,251 @@ import {
   FiChevronRight,
   FiStar,
   FiMessageSquare,
-  FiCheckCircle,
+  FiArrowRight,
+  FiArrowLeft,
+  FiPause,
 } from 'react-icons/fi';
 import { FaQuoteLeft } from 'react-icons/fa';
 import { testimonials } from '../../data/testimonials';
+
+import logoIngelectros from '../../img/3.png';
+import logoMDBoutique from '../../img/4-1.png';
+import logoSasaIT from '../../img/5.png';
+import logoUNAC from '../../img/Nuevo-Cliente4.png';
+import logoVicor from '../../img/Nuevo-Cliente5.png';
+import logoComfica from '../../img/confica-colombia.png';
+import logoHikvision from '../../img/camera-mexico.png';
+
 import './Testimonials.css';
+
+// Lista de clientes con sus logos oficiales y tags tipo píldora
+const marqueeClients = [
+  {
+    id: 'ingelectros',
+    name: 'Ingelectros Perú',
+    logo: logoIngelectros,
+    tag: 'Ingeniería Electromecánica',
+    tagClass: 'client-pill__tag--blue',
+    testimonialIndex: 5, // Dr. Martín Solís
+  },
+  {
+    id: 'md-boutique',
+    name: 'MD Boutique',
+    logo: logoMDBoutique,
+    tag: 'Retail & Moda Exclusiva',
+    tagClass: 'client-pill__tag--purple',
+    testimonialIndex: 1, // Rosangelica Ayllon
+  },
+  {
+    id: 'sasa-it',
+    name: 'SASA-IT Service',
+    logo: logoSasaIT,
+    tag: 'Servicios TI & Cloud',
+    tagClass: 'client-pill__tag--cyan',
+    testimonialIndex: 3, // Raquel García
+  },
+  {
+    id: 'unac',
+    name: 'Universidad Nacional del Callao',
+    logo: logoUNAC,
+    tag: 'Educación Superior',
+    tagClass: 'client-pill__tag--blue',
+    testimonialIndex: 4, // Dr. Jason Olivos
+  },
+  {
+    id: 'vicor',
+    name: 'Vicor Ingenieros',
+    logo: logoVicor,
+    tag: 'Minería & Operaciones',
+    tagClass: 'client-pill__tag--amber',
+    testimonialIndex: 0, // Wilmer Vivar
+  },
+  {
+    id: 'comfica',
+    name: 'Comfica',
+    logo: logoComfica,
+    tag: 'Telecomunicaciones',
+    tagClass: 'client-pill__tag--indigo',
+    testimonialIndex: 2, // Carolina Rivera
+  },
+  {
+    id: 'hikvision',
+    name: 'Hikvision Stores',
+    logo: logoHikvision,
+    tag: 'Seguridad Electrónica',
+    tagClass: 'client-pill__tag--rose',
+    testimonialIndex: 4, // Dr. Jason Olivos
+  },
+];
+
+// Triplicar para bucle continuo infinito
+const tripleClients = [...marqueeClients, ...marqueeClients, ...marqueeClients];
+
+function ClientMarqueeSteerable({ onSelectIndex }) {
+  const containerRef = useRef(null);
+  const trackRef = useRef(null);
+  const [cursorInfo, setCursorInfo] = useState({
+    visible: false,
+    direction: 'none', // 'left' | 'right' | 'pause'
+    x: 0,
+    y: 0,
+  });
+
+  const stateRef = useRef({
+    offset: 0,
+    currentSpeed: 0.8,
+    targetSpeed: 0.8,
+    singleSetWidth: 0,
+    rafId: null,
+  });
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const measureWidth = () => {
+      if (track) {
+        stateRef.current.singleSetWidth = track.scrollWidth / 3;
+      }
+    };
+
+    measureWidth();
+    window.addEventListener('resize', measureWidth);
+
+    const animate = () => {
+      const state = stateRef.current;
+      // Damped spring interpolation hacia targetSpeed
+      state.currentSpeed += (state.targetSpeed - state.currentSpeed) * 0.08;
+      state.offset += state.currentSpeed;
+
+      const sw = state.singleSetWidth || 1200;
+      if (state.offset >= sw) {
+        state.offset -= sw;
+      } else if (state.offset < 0) {
+        state.offset += sw;
+      }
+
+      if (track) {
+        track.style.transform = `translate3d(${-state.offset}px, 0, 0)`;
+      }
+
+      state.rafId = requestAnimationFrame(animate);
+    };
+
+    stateRef.current.rafId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(stateRef.current.rafId);
+      window.removeEventListener('resize', measureWidth);
+    };
+  }, []);
+
+  const handleMouseMove = (e) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const ratio = Math.max(0, Math.min(1, x / rect.width));
+
+    const state = stateRef.current;
+
+    // Zona Central Muerta (42% a 58%): SE PAUSA
+    if (ratio >= 0.42 && ratio <= 0.58) {
+      state.targetSpeed = 0;
+      setCursorInfo({ visible: true, direction: 'pause', x, y });
+    }
+    // Zona Derecha (> 58%): Carrusel avanza hacia la derecha (offset disminuye)
+    else if (ratio > 0.58) {
+      const intensity = (ratio - 0.58) / 0.42; // 0 a 1
+      state.targetSpeed = -intensity * 3.6; // Desplaza carrusel a la derecha
+      setCursorInfo({ visible: true, direction: 'right', x, y });
+    }
+    // Zona Izquierda (< 42%): Carrusel avanza hacia la izquierda (offset aumenta)
+    else {
+      const intensity = (0.42 - ratio) / 0.42; // 0 a 1
+      state.targetSpeed = intensity * 3.6; // Desplaza carrusel a la izquierda
+      setCursorInfo({ visible: true, direction: 'left', x, y });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    const state = stateRef.current;
+    state.targetSpeed = 0.8; // Reanuda avance suave por defecto
+    setCursorInfo({ visible: false, direction: 'none', x: 0, y: 0 });
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className={`client-marquee-steerable ${
+        cursorInfo.visible ? `client-marquee-steerable--${cursorInfo.direction}` : ''
+      }`}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Sombras de desvanecimiento laterales */}
+      <div className="client-marquee-steerable__fade client-marquee-steerable__fade--left" />
+      <div className="client-marquee-steerable__fade client-marquee-steerable__fade--right" />
+
+      {/* Pista continua infinita */}
+      <div className="client-marquee-steerable__track" ref={trackRef}>
+        {tripleClients.map((item, idx) => (
+          <div
+            key={`${item.id}-${idx}`}
+            className="client-marquee-pill"
+            onClick={() => onSelectIndex(item.testimonialIndex)}
+          >
+            <div className="client-marquee-pill__logo-wrap">
+              <img
+                src={item.logo}
+                alt={item.name}
+                className="client-marquee-pill__logo"
+              />
+            </div>
+            <span className="client-marquee-pill__name">{item.name}</span>
+            <span className={`client-marquee-pill__tag ${item.tagClass}`}>
+              {item.tag}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Cursor Flotante Direccional que sigue al mouse */}
+      {cursorInfo.visible && (
+        <div
+          className={`client-marquee-cursor client-marquee-cursor--${cursorInfo.direction}`}
+          style={{
+            transform: `translate3d(${cursorInfo.x}px, ${cursorInfo.y}px, 0)`,
+          }}
+        >
+          {cursorInfo.direction === 'right' && (
+            <>
+              <span>Desplazar</span>
+              <FiArrowRight size={15} />
+            </>
+          )}
+          {cursorInfo.direction === 'left' && (
+            <>
+              <FiArrowLeft size={15} />
+              <span>Desplazar</span>
+            </>
+          )}
+          {cursorInfo.direction === 'pause' && (
+            <>
+              <FiPause size={13} />
+              <span>Pausa</span>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 = next, -1 = prev
+  const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
 
   const total = testimonials.length;
@@ -46,6 +282,9 @@ export default function Testimonials() {
 
   return (
     <section className="testimonials-modern" id="testimonios">
+      {/* Ancla para enlaces */}
+      <div id="clientes" style={{ position: 'absolute', top: '-80px' }} />
+
       {/* Luces ambientales tenues de fondo */}
       <div className="testimonials-modern__ambient-glow testimonials-modern__ambient-glow--left" />
       <div className="testimonials-modern__ambient-glow testimonials-modern__ambient-glow--right" />
@@ -99,6 +338,17 @@ export default function Testimonials() {
               <span className="testimonials-modern__metric-label">Tasa de Fidelidad</span>
             </div>
           </div>
+        </motion.div>
+
+        {/* Barrita Interactiva de Clientes con Control Direccional por Mouse */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.65, delay: 0.1 }}
+          style={{ marginBottom: '44px' }}
+        >
+          <ClientMarqueeSteerable onSelectIndex={goTo} />
         </motion.div>
 
         {/* Tarjeta Destacada con Animación Fluida */}
