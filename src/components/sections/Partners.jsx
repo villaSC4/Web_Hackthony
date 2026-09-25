@@ -10,9 +10,7 @@ import {
   FiArrowRight, 
   FiExternalLink, 
   FiX,
-  FiZap,
-  FiShield,
-  FiLayers
+  FiZap
 } from 'react-icons/fi';
 import { 
   LogoMicrosoft, 
@@ -302,10 +300,9 @@ export default function Partners() {
     targetRotationRef.current -= angleStep;
   }, [angleStep]);
 
-  // Encontrar el partner actualmente al frente (más cercano a z máximo)
+  // Encontrar el índice del partner actualmente al frente (para dot indicador)
   const normalizedRotation = (((-rotation) % 360) + 360) % 360;
   const activeFrontIndex = Math.round(normalizedRotation / angleStep) % total;
-  const activePartner = alliance3DPartners[activeFrontIndex];
 
   return (
     <section className="partners section" id="partners">
@@ -359,15 +356,6 @@ export default function Partners() {
           ESCENARIO 3D CILÍNDRICO 360° (SE VE DE FONDO COMO GIRA Y VUELVE)
           ======================================================== */}
       <div className="partners-3d-section">
-        <div className="container">
-          <div className="partners-3d-header-info">
-            <span className="partners-3d-pill-badge">
-              <FiLayers size={13} />
-              <span>Giro Orbital 360° • Arrastra o apunta con el mouse para navegar</span>
-            </span>
-          </div>
-        </div>
-
         {/* Escenario 3D Interactivo */}
         <div
           ref={stageRef}
@@ -449,20 +437,9 @@ export default function Partners() {
                     style={{ background: `radial-gradient(circle at 50% 0%, ${item.accentColor}25, transparent 70%)` }}
                   />
 
-                  {/* Cabecera de la tarjeta: Categoría y Estado */}
-                  <div className="partners-3d-card__top">
-                    <span className="partners-3d-card__category">{item.category}</span>
-                    <span 
-                      className="partners-3d-card__status"
-                      style={{ color: item.accentColor, borderColor: `${item.accentColor}35` }}
-                    >
-                      {item.status}
-                    </span>
-                  </div>
-
                   {/* Logo Oficial Amplio y Nombre de la Marca */}
                   <div className="partners-3d-card__logo-wrap">
-                    <LogoComp height={38} className="partners-3d-card__svg" />
+                    <LogoComp height={46} className="partners-3d-card__svg" />
                     <h3 className="partners-3d-card__name">{item.name}</h3>
                     <span className="partners-3d-card__tier">{item.tier}</span>
                   </div>
@@ -565,26 +542,6 @@ export default function Partners() {
               <FiChevronRight size={20} />
             </button>
           </div>
-
-          {/* Tarjeta de Resumen Rápido del Partner Activo al Frente */}
-          {activePartner && (
-            <div className="partners-3d-active-summary">
-              <div className="partners-3d-active-summary__content">
-                <span className="partners-3d-active-summary__label">Alianza Destacada en Foco:</span>
-                <strong className="partners-3d-active-summary__name">{activePartner.name}</strong>
-                <span className="partners-3d-active-summary__tier">• {activePartner.tier}</span>
-                <span className="partners-3d-active-summary__metric">({activePartner.metric})</span>
-              </div>
-              <button
-                type="button"
-                className="btn btn-primary partners-3d-active-summary__cta"
-                onClick={() => setSelectedPartner(activePartner)}
-              >
-                <span>Consultar Solución Oficial</span>
-                <FiArrowRight size={15} />
-              </button>
-            </div>
-          )}
         </div>
       </div>
 

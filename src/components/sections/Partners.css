@@ -190,30 +190,6 @@
   padding: 10px 0 30px;
 }
 
-.partners-3d-header-info {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.partners-3d-pill-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 20px;
-  background: #FFFFFF;
-  border: 1px solid rgba(37, 99, 235, 0.15);
-  border-radius: 9999px;
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #334155;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-}
-
-.partners-3d-pill-badge svg {
-  color: #2563EB;
-}
 
 /* Escenario con perspectiva 3D */
 .partners-3d-stage {
@@ -316,36 +292,6 @@
   border-color: rgba(37, 99, 235, 0.4);
 }
 
-.partners-3d-card__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  position: relative;
-  z-index: 1;
-}
-
-.partners-3d-card__category {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #64748B;
-  background: #F1F5F9;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.partners-3d-card__status {
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 9999px;
-  border: 1px solid;
-  background: #FFFFFF;
-}
 
 .partners-3d-card__logo-wrap {
   display: flex;
@@ -529,56 +475,6 @@
   background: #2563EB;
 }
 
-/* Resumen rápido del partner en foco */
-.partners-3d-active-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 16px 26px;
-  background: #FFFFFF;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.04);
-}
-
-.partners-3d-active-summary__content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 0.88rem;
-}
-
-.partners-3d-active-summary__label {
-  color: #64748B;
-}
-
-.partners-3d-active-summary__name {
-  color: #0F172A;
-  font-weight: 800;
-  font-family: var(--font-display, 'Outfit', sans-serif);
-  font-size: 1rem;
-}
-
-.partners-3d-active-summary__tier {
-  color: #2563EB;
-  font-weight: 600;
-}
-
-.partners-3d-active-summary__metric {
-  color: #059669;
-  font-weight: 700;
-}
-
-.partners-3d-active-summary__cta {
-  padding: 9px 20px;
-  font-size: 0.84rem;
-  white-space: nowrap;
-}
 
 /* --------------------------------------------
    MODAL DE ALIANZA TECNOLÓGICA
@@ -800,20 +696,6 @@
     transform: translateY(140px) rotateX(76deg);
   }
 
-  .partners-3d-active-summary {
-    flex-direction: column;
-    text-align: center;
-    gap: 14px;
-    padding: 16px 18px;
-  }
-
-  .partners-3d-active-summary__content {
-    justify-content: center;
-  }
-
-  .partners-3d-active-summary__cta {
-    width: 100%;
-  }
 
   .client-modal-card {
     padding: 28px 22px;
