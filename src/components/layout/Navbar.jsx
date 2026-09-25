@@ -7,8 +7,8 @@ const navLinks = [
   { href: '#servicios', label: 'Servicios' },
   { href: '#productos', label: 'Equipos' },
   { href: '#nosotros', label: 'Nosotros' },
-  { href: '#testimonios', label: 'Testimonios' },
-  { href: '#partners', label: 'Clientes' },
+  { href: '#testimonios', label: 'Clientes' },
+  { href: '#partners', label: 'Alianzas' },
 ];
 
 export default function Navbar() {

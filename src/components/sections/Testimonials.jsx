@@ -1,22 +1,147 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiChevronLeft,
   FiChevronRight,
-  FiStar,
-  FiMessageSquare,
   FiCheckCircle,
+  FiAward,
+  FiShield,
+  FiGlobe,
+  FiArrowRight,
+  FiCheck,
 } from 'react-icons/fi';
-import { FaQuoteLeft } from 'react-icons/fa';
-import { testimonials } from '../../data/testimonials';
+
+import logoIngelectros from '../../img/3.png';
+import logoMDBoutique from '../../img/4-1.png';
+import logoSasaIT from '../../img/5.png';
+import logoUNAC from '../../img/Nuevo-Cliente4.png';
+import logoVicor from '../../img/Nuevo-Cliente5.png';
+import logoComfica from '../../img/confica-colombia.png';
+import logoHikvision from '../../img/camera-mexico.png';
+
 import './Testimonials.css';
+
+export const clientsList = [
+  {
+    id: 'unac',
+    name: 'Universidad Nacional del Callao',
+    shortName: 'UNAC',
+    logo: logoUNAC,
+    sector: 'Educación Superior & Sector Público',
+    location: 'Callao, Perú',
+    flag: '🇵🇪',
+    highlight: 'Soporte Continuo para +15,000 Usuarios',
+    deliverables: [
+      'Infraestructura de Servidores & Virtualización de Misión Crítica',
+      'Conectividad de Alta Disponibilidad para el Campus Universitario',
+      'Licenciamiento Educativo Oficial & Mesa de Ayuda Especializada',
+    ],
+    tag: 'Institución Pública Universitaria',
+  },
+  {
+    id: 'vicor',
+    name: 'Vicor Ingenieros',
+    shortName: 'Vicor Ingenieros',
+    logo: logoVicor,
+    sector: 'Ingeniería, Minería & Operaciones Subterráneas',
+    location: 'Lima, Perú',
+    flag: '🇵🇪',
+    highlight: 'Operaciones Mineras de Misión Crítica',
+    deliverables: [
+      'Enlaces Cifrados IPsec & Redes Seguras para Faenas Mineras',
+      'Mantenimiento Predictivo & Servidores de Almacenamiento Seguro',
+      'Soporte Técnico Helpdesk Continuo para Equipos en Operación',
+    ],
+    tag: 'Operaciones Industriales',
+  },
+  {
+    id: 'ingelectros',
+    name: 'Ingelectros Perú',
+    shortName: 'Ingelectros Perú',
+    logo: logoIngelectros,
+    sector: 'Ingeniería Electromecánica & Proyectos Industriales',
+    location: 'Lima, Perú',
+    flag: '🇵🇪',
+    highlight: 'Continuidad Operativa Corporativa 99.9%',
+    deliverables: [
+      'Mesa de Ayuda Helpdesk 24/7 para Planteles y Oficinas',
+      'Blindaje de Seguridad Perimetral & Prevención contra Amenazas',
+      'Gestión Integral de Redes Corporativas & Soporte Multiusuario',
+    ],
+    tag: 'Cliente Corporativo Continuo',
+  },
+  {
+    id: 'md-boutique',
+    name: 'MD Boutique',
+    shortName: 'MD Boutique',
+    logo: logoMDBoutique,
+    sector: 'Retail Exclusivo & Comercio Especializado',
+    location: 'Lima, Perú',
+    flag: '🇵🇪',
+    highlight: 'Alta Disponibilidad en Puntos de Venta',
+    deliverables: [
+      'Soporte Técnico Especializado para Sistemas POS & Facturación',
+      'Redes Wi-Fi Corporativas de Alta Densidad para Clientes y Personal',
+      'Mantenimiento Continuo de Equipos de Cómputo & Red Comercial',
+    ],
+    tag: 'Comercio & Retail',
+  },
+  {
+    id: 'sasa-it',
+    name: 'SASA-IT Service',
+    shortName: 'SASA-IT Service',
+    logo: logoSasaIT,
+    sector: 'Servicios Tecnológicos & Soluciones Digitales',
+    location: 'Perú / Internacional',
+    flag: '🌐',
+    highlight: 'Alianza Estratégica en Servicios TI',
+    deliverables: [
+      'Consultoría en Arquitectura Cloud & Conectividad Avanzada',
+      'Túneles Seguros VPN Site-to-Site Multi-Sede',
+      'Soporte de Segundo y Tercer Nivel para Entornos Críticos',
+    ],
+    tag: 'Alianza Tecnológica',
+  },
+  {
+    id: 'comfica',
+    name: 'Comfica Soluciones Integrales',
+    shortName: 'Comfica',
+    logo: logoComfica,
+    sector: 'Telecomunicaciones & Redes de Fibra Óptica',
+    location: 'Colombia / Internacional',
+    flag: '🇨🇴',
+    highlight: 'Infraestructura Regional de Telecomunicaciones',
+    deliverables: [
+      'Soporte Técnico de Nivel 2 y 3 para Plataformas de Comunicación',
+      'Auditoría y Optimización de Equipamiento de Conmutación Troncal',
+      'Continuidad Operativa para Enlaces de Datos Corporativos',
+    ],
+    tag: 'Telecomunicaciones',
+  },
+  {
+    id: 'hikvision',
+    name: 'Hikvision Stores México',
+    shortName: 'Hikvision Stores',
+    logo: logoHikvision,
+    sector: 'Seguridad Electrónica & Videovigilancia',
+    location: 'CDMX, México',
+    flag: '🇲🇽',
+    highlight: 'Soporte y Enlaces Seguros Internacionales',
+    deliverables: [
+      'Enlaces IPsec Cifrados para Videovigilancia y Gestión Centralizada',
+      'Soporte Técnico Remoto de Alta Disponibilidad',
+      'Monitoreo Continuo de Estabilidad de Red y Servidores',
+    ],
+    tag: 'Seguridad Electrónica',
+  },
+];
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 = next, -1 = prev
+  const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
 
-  const total = testimonials.length;
+  const total = clientsList.length;
 
   const nextSlide = useCallback(() => {
     setDirection(1);
@@ -42,10 +167,13 @@ export default function Testimonials() {
     return () => clearInterval(timer);
   }, [nextSlide, isPaused]);
 
-  const activeTestimonial = testimonials[current];
+  const activeClient = clientsList[current];
 
   return (
-    <section className="testimonials-modern" id="testimonios">
+    <section className="testimonials-modern" id="clientes">
+      {/* Ancla para compatibilidad con enlaces existentes */}
+      <div id="testimonios" style={{ position: 'absolute', top: '-80px' }} />
+
       {/* Luces ambientales tenues de fondo */}
       <div className="testimonials-modern__ambient-glow testimonials-modern__ambient-glow--left" />
       <div className="testimonials-modern__ambient-glow testimonials-modern__ambient-glow--right" />
@@ -60,8 +188,8 @@ export default function Testimonials() {
           transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="testimonials-modern__badge">
-            <FiMessageSquare className="testimonials-modern__badge-icon" size={14} />
-            <span>Lo Que Dicen Nuestros Clientes</span>
+            <FiAward className="testimonials-modern__badge-icon" size={15} />
+            <span>Empresas & Organizaciones que Respaldamos</span>
           </div>
 
           <h2 className="testimonials-modern__title">
@@ -69,128 +197,150 @@ export default function Testimonials() {
           </h2>
 
           <p className="testimonials-modern__subtitle">
-            Más de 500 empresas y profesionales han transformado su infraestructura tecnológica
-            con nuestro soporte. Estas son sus experiencias de éxito.
+            Organizaciones líderes, instituciones educativas e industrias confían en Hackthony
+            para garantizar su continuidad operativa, infraestructura de red y soporte 24/7.
           </p>
 
-          {/* Micro-estadísticas de confianza */}
+          {/* Micro-estadísticas de confianza corporativa */}
           <div className="testimonials-modern__metrics">
             <div className="testimonials-modern__metric-item">
-              <span className="testimonials-modern__metric-number">4.9 / 5.0</span>
-              <div className="testimonials-modern__stars-static">
-                {[...Array(5)].map((_, i) => (
-                  <FiStar key={i} size={13} fill="#F59E0B" color="#F59E0B" />
-                ))}
-              </div>
-              <span className="testimonials-modern__metric-label">Calificación Promedio</span>
-            </div>
-
-            <div className="testimonials-modern__metric-sep" />
-
-            <div className="testimonials-modern__metric-item">
               <span className="testimonials-modern__metric-number">+500</span>
-              <span className="testimonials-modern__metric-label">Empresas Atendidas</span>
+              <span className="testimonials-modern__metric-label">Proyectos TI Ejecutados</span>
             </div>
 
             <div className="testimonials-modern__metric-sep" />
 
             <div className="testimonials-modern__metric-item">
               <span className="testimonials-modern__metric-number">99.4%</span>
-              <span className="testimonials-modern__metric-label">Tasa de Fidelidad</span>
+              <span className="testimonials-modern__metric-label">Continuidad Operativa</span>
+            </div>
+
+            <div className="testimonials-modern__metric-sep" />
+
+            <div className="testimonials-modern__metric-item">
+              <span className="testimonials-modern__metric-number">24 / 7</span>
+              <span className="testimonials-modern__metric-label">Mesa de Ayuda Activa</span>
             </div>
           </div>
         </motion.div>
 
-        {/* Tarjeta Destacada con Animación Fluida */}
+        {/* Tarjeta de Spotlight Destacada con Animaciones Fluidas */}
         <div
           className="testimonials-modern__showcase"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           <motion.div
-            className="testimonials-modern__featured-card"
+            className="testimonials-modern__spotlight-card"
             initial={{ opacity: 0, y: 30, scale: 0.98 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Ícono de Comillas Estilizado */}
-            <div className="testimonials-modern__quote-icon-wrap">
-              <FaQuoteLeft size={28} />
-            </div>
-
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeTestimonial.id}
-                className="testimonials-modern__featured-body"
+                key={activeClient.id}
+                className="testimonials-modern__spotlight-grid"
                 initial={{ opacity: 0, x: direction * 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: direction * -40 }}
                 transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
               >
-                {/* Texto del Testimonio */}
-                <p className="testimonials-modern__quote-text">
-                  "{activeTestimonial.text}"
-                </p>
-
-                {/* Footer del Testimonio Destacado */}
-                <div className="testimonials-modern__author-row">
-                  <div className="testimonials-modern__author-group">
-                    <div className="testimonials-modern__avatar">
-                      {activeTestimonial.avatar}
-                    </div>
-                    <div>
-                      <h4 className="testimonials-modern__author-name">
-                        {activeTestimonial.name}
-                      </h4>
-                      <p className="testimonials-modern__author-role">
-                        {activeTestimonial.role} • <span>{activeTestimonial.company}</span>
-                      </p>
-                    </div>
+                {/* LADO IZQUIERDO: Escaparate Visual del Logo Oficial */}
+                <div className="testimonials-modern__logo-stage">
+                  <div className="testimonials-modern__logo-box">
+                    <img
+                      src={activeClient.logo}
+                      alt={activeClient.name}
+                      className="testimonials-modern__logo-img"
+                    />
                   </div>
 
-                  {/* Estrellas Calificación */}
-                  <div className="testimonials-modern__stars">
-                    {[...Array(activeTestimonial.rating)].map((_, sIdx) => (
-                      <motion.div
-                        key={sIdx}
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.1 + sIdx * 0.05, type: 'spring', stiffness: 300 }}
-                      >
-                        <FiStar size={18} fill="#F59E0B" color="#F59E0B" />
-                      </motion.div>
-                    ))}
+                  {/* Estado en Vivo */}
+                  <div className="testimonials-modern__status-pill">
+                    <span className="testimonials-modern__status-dot" />
+                    <span>Cliente Activo • Soporte Continuo</span>
+                  </div>
+                </div>
+
+                {/* LADO DERECHO: Ficha de Perfil y Alcance Tecnológico */}
+                <div className="testimonials-modern__info-stage">
+                  <div className="testimonials-modern__meta-row">
+                    <span className="testimonials-modern__sector-badge">
+                      {activeClient.sector}
+                    </span>
+                    <span className="testimonials-modern__location-badge">
+                      <span>{activeClient.flag}</span>
+                      <span>{activeClient.location}</span>
+                    </span>
+                  </div>
+
+                  <h3 className="testimonials-modern__client-name">
+                    {activeClient.name}
+                  </h3>
+
+                  <div className="testimonials-modern__highlight-box">
+                    <FiCheckCircle className="testimonials-modern__highlight-icon" size={18} />
+                    <span>{activeClient.highlight}</span>
+                  </div>
+
+                  {/* Alcance Técnico Implementado */}
+                  <div className="testimonials-modern__deliverables-block">
+                    <span className="testimonials-modern__deliverables-title">
+                      Alcance del Servicio & Infraestructura:
+                    </span>
+                    <ul className="testimonials-modern__deliverables-list">
+                      {activeClient.deliverables.map((item, idx) => (
+                        <li key={idx} className="testimonials-modern__deliverable-item">
+                          <span className="testimonials-modern__check-badge">
+                            <FiCheck size={12} />
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Footer de Ficha */}
+                  <div className="testimonials-modern__stage-footer">
+                    <span className="testimonials-modern__tag-pill">
+                      <FiShield size={13} />
+                      {activeClient.tag}
+                    </span>
+                    <span className="testimonials-modern__verified-pill">
+                      Infraestructura Auditada & Verificada
+                    </span>
                   </div>
                 </div>
               </motion.div>
             </AnimatePresence>
 
-            {/* Decoración de fondo sutil */}
+            {/* Resplandor decorativo de fondo */}
             <div className="testimonials-modern__card-glow" />
           </motion.div>
 
-          {/* Controles de Navegación Flotantes */}
+          {/* Controles de Navegación del Spotlight */}
           <div className="testimonials-modern__nav">
             <button
               type="button"
               className="testimonials-modern__nav-btn"
               onClick={prevSlide}
-              aria-label="Testimonio anterior"
+              aria-label="Cliente anterior"
             >
               <FiChevronLeft size={20} />
             </button>
 
             <div className="testimonials-modern__dots">
-              {testimonials.map((_, dotIdx) => {
+              {clientsList.map((client, dotIdx) => {
                 const isActive = dotIdx === current;
                 return (
                   <button
-                    key={dotIdx}
+                    key={client.id}
                     type="button"
                     className={`testimonials-modern__dot ${isActive ? 'testimonials-modern__dot--active' : ''}`}
                     onClick={() => goTo(dotIdx)}
-                    aria-label={`Ir al testimonio ${dotIdx + 1}`}
+                    aria-label={`Ver cliente ${client.name}`}
+                    title={client.name}
                   />
                 );
               })}
@@ -200,50 +350,77 @@ export default function Testimonials() {
               type="button"
               className="testimonials-modern__nav-btn"
               onClick={nextSlide}
-              aria-label="Testimonio siguiente"
+              aria-label="Cliente siguiente"
             >
               <FiChevronRight size={20} />
             </button>
           </div>
         </div>
 
-        {/* Mini Grid de Todos los Testimonios con entrada escalonada */}
+        {/* Marquee Flotante Continuo con Logos de Todos los Clientes */}
+        <div className="testimonials-modern__marquee-wrap">
+          <div className="testimonials-modern__marquee-fade testimonials-modern__marquee-fade--left" />
+          <div className="testimonials-modern__marquee-fade testimonials-modern__marquee-fade--right" />
+          <div className="testimonials-modern__marquee-track">
+            {[...clientsList, ...clientsList].map((client, mIdx) => (
+              <div
+                key={`${client.id}-${mIdx}`}
+                className="testimonials-modern__marquee-pill"
+                onClick={() => goTo(mIdx % total)}
+              >
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  className="testimonials-modern__marquee-logo"
+                />
+                <span className="testimonials-modern__marquee-name">{client.shortName}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Cuadrícula Interactiva con Todos los Clientes */}
         <div className="testimonials-modern__grid">
-          {testimonials.map((item, idx) => {
+          {clientsList.map((client, idx) => {
             const isActive = idx === current;
             return (
               <motion.div
-                key={item.id}
-                className={`testimonials-modern__mini-card ${isActive ? 'testimonials-modern__mini-card--active' : ''}`}
+                key={client.id}
+                className={`testimonials-modern__client-card ${
+                  isActive ? 'testimonials-modern__client-card--active' : ''
+                }`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.15 }}
                 transition={{
                   duration: 0.55,
-                  delay: idx * 0.06,
+                  delay: idx * 0.05,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -6, scale: 1.015 }}
                 onClick={() => goTo(idx)}
               >
-                <div className="testimonials-modern__mini-stars">
-                  {[...Array(item.rating)].map((_, j) => (
-                    <FiStar key={j} size={13} fill="#F59E0B" color="#F59E0B" />
-                  ))}
+                <div className="testimonials-modern__card-logo-wrap">
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    className="testimonials-modern__card-logo"
+                  />
                 </div>
 
-                <p className="testimonials-modern__mini-text">
-                  "{item.text.slice(0, 115)}..."
-                </p>
+                <div className="testimonials-modern__card-body">
+                  <div className="testimonials-modern__card-header-row">
+                    <span className="testimonials-modern__card-flag">{client.flag}</span>
+                    <span className="testimonials-modern__card-sector">{client.sector}</span>
+                  </div>
 
-                <div className="testimonials-modern__mini-author">
-                  <div className="testimonials-modern__mini-avatar">
-                    {item.avatar}
-                  </div>
-                  <div className="testimonials-modern__mini-info">
-                    <strong className="testimonials-modern__mini-name">{item.name}</strong>
-                    <span className="testimonials-modern__mini-company">{item.company}</span>
-                  </div>
+                  <h4 className="testimonials-modern__card-name">{client.name}</h4>
+                  <p className="testimonials-modern__card-highlight">{client.highlight}</p>
+                </div>
+
+                <div className="testimonials-modern__card-action">
+                  <span>{isActive ? 'En pantalla' : 'Ver alcance'}</span>
+                  <FiArrowRight size={14} />
                 </div>
               </motion.div>
             );

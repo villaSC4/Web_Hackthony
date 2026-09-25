@@ -17,9 +17,9 @@ export default function Footer() {
   ];
 
   const quickLinks = [
-    { label: 'Clientes & Partners', href: '#partners' },
+    { label: 'Clientes & Casos de Éxito', href: '#clientes' },
+    { label: 'Alianzas Oficiales', href: '#partners' },
     { label: 'Catálogo de Equipos', href: '#productos' },
-    { label: 'Casos y Testimonios', href: '#testimonios' },
     { label: 'Quiénes Somos', href: '#nosotros' },
     { label: 'Contacto Directo', href: '#contacto' },
   ];
