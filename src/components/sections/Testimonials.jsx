@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiChevronLeft,
@@ -8,79 +8,15 @@ import {
   FiCheckCircle,
 } from 'react-icons/fi';
 import { FaQuoteLeft } from 'react-icons/fa';
-
-import logoIngelectros from '../../img/3.png';
-import logoMDBoutique from '../../img/4-1.png';
-import logoSasaIT from '../../img/5.png';
-import logoUNAC from '../../img/Nuevo-Cliente4.png';
-import logoVicor from '../../img/Nuevo-Cliente5.png';
-
+import { testimonials } from '../../data/testimonials';
 import './Testimonials.css';
-
-export const testimonialsData = [
-  {
-    id: 1,
-    company: 'Ingelectros Perú',
-    logo: logoIngelectros,
-    name: 'Dr. Martín Solís',
-    role: 'Gerente General',
-    avatar: 'MS',
-    text: 'La profesionalidad y el compromiso del equipo de HackthonySupport nos han permitido optimizar nuestras operaciones y mantener nuestros datos seguros. Su soporte técnico constante los hace altamente recomendables.',
-    rating: 5,
-    tag: 'Ingeniería Electromecánica',
-  },
-  {
-    id: 2,
-    company: 'MD Boutique',
-    logo: logoMDBoutique,
-    name: 'Mariela Delgado',
-    role: 'Directora General',
-    avatar: 'MD',
-    text: 'La estabilidad de nuestras terminales de venta y redes Wi-Fi en tienda es fundamental para el negocio. Hackthony nos garantiza soporte inmediato y cero caídas en nuestras operaciones comerciales.',
-    rating: 5,
-    tag: 'Retail & Comercio',
-  },
-  {
-    id: 3,
-    company: 'SASA-IT Service',
-    logo: logoSasaIT,
-    name: 'Raquel García',
-    role: 'Directora TI',
-    avatar: 'RG',
-    text: 'El equipo de HackthonySupport ha demostrado una experiencia y solvencia técnica incomparables. Gracias a sus enlaces seguros y soporte preventivo, nuestros servidores operan con total tranquilidad.',
-    rating: 5,
-    tag: 'Servicios Tecnológicos',
-  },
-  {
-    id: 4,
-    company: 'Universidad Nacional del Callao',
-    logo: logoUNAC,
-    name: 'Ing. Carlos Mendoza',
-    role: 'Coordinador de Infraestructura TI',
-    avatar: 'CM',
-    text: 'La atención de Hackthony para la virtualización de servidores y la conectividad del campus ha sido impecable. Su capacidad de respuesta ante incidencias complejas es de primer nivel.',
-    rating: 5,
-    tag: 'Educación Superior',
-  },
-  {
-    id: 5,
-    company: 'Vicor Ingenieros',
-    logo: logoVicor,
-    name: 'Wilmer Vivar',
-    role: 'Gerente de Proyectos',
-    avatar: 'WV',
-    text: 'HackthonySupport ha transformado completamente nuestra infraestructura tecnológica en campo. Sus enlaces seguros y soporte técnico continuo han mejorado significativamente nuestra eficiencia operativa.',
-    rating: 5,
-    tag: 'Minería & Operaciones',
-  },
-];
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
+  const [direction, setDirection] = useState(1); // 1 = next, -1 = prev
   const [isPaused, setIsPaused] = useState(false);
 
-  const total = testimonialsData.length;
+  const total = testimonials.length;
 
   const nextSlide = useCallback(() => {
     setDirection(1);
@@ -102,17 +38,14 @@ export default function Testimonials() {
     if (isPaused) return;
     const timer = setInterval(() => {
       nextSlide();
-    }, 6000);
+    }, 5500);
     return () => clearInterval(timer);
   }, [nextSlide, isPaused]);
 
-  const active = testimonialsData[current];
+  const activeTestimonial = testimonials[current];
 
   return (
     <section className="testimonials-modern" id="testimonios">
-      {/* Ancla para compatibilidad */}
-      <div id="clientes" style={{ position: 'absolute', top: '-80px' }} />
-
       {/* Luces ambientales tenues de fondo */}
       <div className="testimonials-modern__ambient-glow testimonials-modern__ambient-glow--left" />
       <div className="testimonials-modern__ambient-glow testimonials-modern__ambient-glow--right" />
@@ -128,7 +61,7 @@ export default function Testimonials() {
         >
           <div className="testimonials-modern__badge">
             <FiMessageSquare className="testimonials-modern__badge-icon" size={14} />
-            <span>Lo Que Dicen Quienes Confían en Nosotros</span>
+            <span>Lo Que Dicen Nuestros Clientes</span>
           </div>
 
           <h2 className="testimonials-modern__title">
@@ -136,8 +69,8 @@ export default function Testimonials() {
           </h2>
 
           <p className="testimonials-modern__subtitle">
-            Más de 500 empresas y profesionales han transformado su tecnología con nuestro apoyo.
-            Estas son sus historias y experiencias reales de éxito.
+            Más de 500 empresas y profesionales han transformado su infraestructura tecnológica
+            con nuestro soporte. Estas son sus experiencias de éxito.
           </p>
 
           {/* Micro-estadísticas de confianza */}
@@ -168,46 +101,7 @@ export default function Testimonials() {
           </div>
         </motion.div>
 
-        {/* Barra Horizontal Natural con los 5 Logos Oficiales */}
-        <motion.div
-          className="testimonials-modern__logos-bar"
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
-          transition={{ duration: 0.65, delay: 0.1 }}
-        >
-          {testimonialsData.map((client, idx) => {
-            const isActive = idx === current;
-            return (
-              <button
-                key={client.id}
-                type="button"
-                className={`testimonials-modern__logo-btn ${
-                  isActive ? 'testimonials-modern__logo-btn--active' : ''
-                }`}
-                onClick={() => goTo(idx)}
-                aria-label={`Ver testimonio de ${client.company}`}
-              >
-                <div className="testimonials-modern__logo-btn-img-wrap">
-                  <img
-                    src={client.logo}
-                    alt={client.company}
-                    className="testimonials-modern__logo-btn-img"
-                  />
-                </div>
-                {isActive && (
-                  <motion.div
-                    className="testimonials-modern__logo-btn-indicator"
-                    layoutId="activeClientIndicator"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
-            );
-          })}
-        </motion.div>
-
-        {/* Tarjeta Destacada con el Testimonio + Logo del Cliente */}
+        {/* Tarjeta Destacada con Animación Fluida */}
         <div
           className="testimonials-modern__showcase"
           onMouseEnter={() => setIsPaused(true)}
@@ -220,60 +114,49 @@ export default function Testimonials() {
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Cabecera de la Tarjeta: Ícono de Comillas + Logo Oficial de la Empresa */}
-            <div className="testimonials-modern__card-top-row">
-              <div className="testimonials-modern__quote-icon-wrap">
-                <FaQuoteLeft size={24} />
-              </div>
-
-              {/* Logo Oficial del Cliente Integrado de Manera Natural */}
-              <div className="testimonials-modern__card-brand-badge">
-                <img
-                  src={active.logo}
-                  alt={active.company}
-                  className="testimonials-modern__card-brand-img"
-                />
-              </div>
+            {/* Ícono de Comillas Estilizado */}
+            <div className="testimonials-modern__quote-icon-wrap">
+              <FaQuoteLeft size={28} />
             </div>
 
             <AnimatePresence mode="wait">
               <motion.div
-                key={active.id}
+                key={activeTestimonial.id}
                 className="testimonials-modern__featured-body"
                 initial={{ opacity: 0, x: direction * 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: direction * -40 }}
                 transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
               >
-                {/* Texto del Testimonio de la Persona */}
+                {/* Texto del Testimonio */}
                 <p className="testimonials-modern__quote-text">
-                  "{active.text}"
+                  "{activeTestimonial.text}"
                 </p>
 
-                {/* Footer del Testimonio: Autor + Empresa + Estrellas */}
+                {/* Footer del Testimonio Destacado */}
                 <div className="testimonials-modern__author-row">
                   <div className="testimonials-modern__author-group">
                     <div className="testimonials-modern__avatar">
-                      {active.avatar}
+                      {activeTestimonial.avatar}
                     </div>
                     <div>
                       <h4 className="testimonials-modern__author-name">
-                        {active.name}
+                        {activeTestimonial.name}
                       </h4>
                       <p className="testimonials-modern__author-role">
-                        {active.role} • <span>{active.company}</span>
+                        {activeTestimonial.role} • <span>{activeTestimonial.company}</span>
                       </p>
                     </div>
                   </div>
 
-                  {/* Estrellas Calificación con Animación Pop */}
+                  {/* Estrellas Calificación */}
                   <div className="testimonials-modern__stars">
-                    {[...Array(active.rating)].map((_, sIdx) => (
+                    {[...Array(activeTestimonial.rating)].map((_, sIdx) => (
                       <motion.div
                         key={sIdx}
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ delay: 0.08 + sIdx * 0.05, type: 'spring', stiffness: 320 }}
+                        transition={{ delay: 0.1 + sIdx * 0.05, type: 'spring', stiffness: 300 }}
                       >
                         <FiStar size={18} fill="#F59E0B" color="#F59E0B" />
                       </motion.div>
@@ -283,7 +166,7 @@ export default function Testimonials() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Resplandor sutil de fondo */}
+            {/* Decoración de fondo sutil */}
             <div className="testimonials-modern__card-glow" />
           </motion.div>
 
@@ -299,15 +182,15 @@ export default function Testimonials() {
             </button>
 
             <div className="testimonials-modern__dots">
-              {testimonialsData.map((client, dotIdx) => {
+              {testimonials.map((_, dotIdx) => {
                 const isActive = dotIdx === current;
                 return (
                   <button
-                    key={client.id}
+                    key={dotIdx}
                     type="button"
                     className={`testimonials-modern__dot ${isActive ? 'testimonials-modern__dot--active' : ''}`}
                     onClick={() => goTo(dotIdx)}
-                    aria-label={`Ir al testimonio de ${client.company}`}
+                    aria-label={`Ir al testimonio ${dotIdx + 1}`}
                   />
                 );
               })}
@@ -324,16 +207,14 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* Mini Grid de los 5 Testimonios con Logos y Citas */}
+        {/* Mini Grid de Todos los Testimonios con entrada escalonada */}
         <div className="testimonials-modern__grid">
-          {testimonialsData.map((item, idx) => {
+          {testimonials.map((item, idx) => {
             const isActive = idx === current;
             return (
               <motion.div
                 key={item.id}
-                className={`testimonials-modern__mini-card ${
-                  isActive ? 'testimonials-modern__mini-card--active' : ''
-                }`}
+                className={`testimonials-modern__mini-card ${isActive ? 'testimonials-modern__mini-card--active' : ''}`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.15 }}
@@ -342,32 +223,19 @@ export default function Testimonials() {
                   delay: idx * 0.06,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                whileHover={{ y: -5, scale: 1.015 }}
+                whileHover={{ y: -4 }}
                 onClick={() => goTo(idx)}
               >
-                {/* Cabecera de la mini-card: Logo de la empresa + Estrellas */}
-                <div className="testimonials-modern__mini-top-row">
-                  <div className="testimonials-modern__mini-logo-wrap">
-                    <img
-                      src={item.logo}
-                      alt={item.company}
-                      className="testimonials-modern__mini-logo"
-                    />
-                  </div>
-
-                  <div className="testimonials-modern__mini-stars">
-                    {[...Array(item.rating)].map((_, j) => (
-                      <FiStar key={j} size={12} fill="#F59E0B" color="#F59E0B" />
-                    ))}
-                  </div>
+                <div className="testimonials-modern__mini-stars">
+                  {[...Array(item.rating)].map((_, j) => (
+                    <FiStar key={j} size={13} fill="#F59E0B" color="#F59E0B" />
+                  ))}
                 </div>
 
-                {/* Cita breve del testimonio */}
                 <p className="testimonials-modern__mini-text">
                   "{item.text.slice(0, 115)}..."
                 </p>
 
-                {/* Autor y Empresa */}
                 <div className="testimonials-modern__mini-author">
                   <div className="testimonials-modern__mini-avatar">
                     {item.avatar}
