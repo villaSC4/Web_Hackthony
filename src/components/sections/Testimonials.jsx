@@ -78,7 +78,7 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
     offset: 0,
     currentSpeed: 0.85,
     targetSpeed: 0.85,
-    singleSetWidth: 0,
+    singleSetWidth: 1410,
     rafId: null,
   });
 
@@ -86,14 +86,35 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
     const track = trackRef.current;
     if (!track) return;
 
+    // Medición exacta y sub-pixel de 1 ciclo completo de 5 tarjetas (360° continuo sin salto)
     const measureWidth = () => {
-      if (track) {
-        stateRef.current.singleSetWidth = track.scrollWidth / 6;
+      if (!track || !track.children || track.children.length < 6) return;
+      const item0 = track.children[0];
+      const item5 = track.children[5]; // Primer elemento del segundo ciclo idéntico
+      if (item0 && item5) {
+        const distance = item5.offsetLeft - item0.offsetLeft;
+        if (distance > 100) {
+          stateRef.current.singleSetWidth = distance;
+        }
       }
     };
 
     measureWidth();
+
+    // ResizeObserver para recalcular al cargar imágenes o cambiar viewport
+    let ro = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => {
+        measureWidth();
+      });
+      ro.observe(track);
+      if (containerRef.current) {
+        ro.observe(containerRef.current);
+      }
+    }
+
     window.addEventListener('resize', measureWidth);
+    window.addEventListener('load', measureWidth);
 
     const animate = () => {
       const state = stateRef.current;
@@ -101,11 +122,16 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
       state.currentSpeed += (state.targetSpeed - state.currentSpeed) * 0.08;
       state.offset += state.currentSpeed;
 
-      const sw = state.singleSetWidth || 1200;
-      if (state.offset >= sw) {
-        state.offset -= sw;
-      } else if (state.offset < 0) {
-        state.offset += sw;
+      const sw = state.singleSetWidth;
+      if (sw > 0) {
+        // Bucle 360° infinito perfecto: al superar el ancho exacto de 1 ciclo de 5 tarjetas,
+        // reinicia a 0 sin ningún choque visual, porque item 5 es idéntico a item 0
+        while (state.offset >= sw) {
+          state.offset -= sw;
+        }
+        while (state.offset < 0) {
+          state.offset += sw;
+        }
       }
 
       if (track) {
@@ -120,6 +146,10 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
     return () => {
       cancelAnimationFrame(stateRef.current.rafId);
       window.removeEventListener('resize', measureWidth);
+      window.removeEventListener('load', measureWidth);
+      if (ro) {
+        ro.disconnect();
+      }
     };
   }, []);
 
@@ -171,7 +201,7 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
       <div className="client-marquee-steerable__fade client-marquee-steerable__fade--left" />
       <div className="client-marquee-steerable__fade client-marquee-steerable__fade--right" />
 
-      {/* Pista continua infinita: los 5 clientes en cuadros grandes y vistosos */}
+      {/* Pista continua infinita 360°: los 5 clientes en cuadros grandes y vistosos */}
       <div className="client-marquee-steerable__track" ref={trackRef}>
         {repeatedClients.map((item, idx) => (
           <div
@@ -184,7 +214,17 @@ function ClientMarqueeSteerable({ onSelectIndex }) {
               src={item.logo}
               alt={item.name}
               className="client-marquee-card__img"
-              loading="lazy"
+              loading="eager"
+              onLoad={() => {
+                const track = trackRef.current;
+                if (!track || !track.children || track.children.length < 6) return;
+                const item0 = track.children[0];
+                const item5 = track.children[5];
+                if (item0 && item5) {
+                  const dist = item5.offsetLeft - item0.offsetLeft;
+                  if (dist > 100) stateRef.current.singleSetWidth = dist;
+                }
+              }}
             />
           </div>
         ))}
